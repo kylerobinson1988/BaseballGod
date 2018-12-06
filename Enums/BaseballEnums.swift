@@ -47,6 +47,45 @@ enum Team: String {
     case arizonaDiamondbacks = "Arizona Diamondbacks"
     case coloradoRockies = "Colorado Rockies"
     
+    var lookupValue: Int {
+        
+        switch self {
+            
+        case .losAngelesAngels: return 108
+        case .arizonaDiamondbacks: return 109
+        case .baltimoreOrioles: return 110
+        case .bostonRedSox: return 111
+        case .chicagoCubs: return 112
+        case .cincinnatiReds: return 113
+        case .clevelandIndians: return 114
+        case .coloradoRockies: return 115
+        case .detroitTigers: return 116
+        case .houstonAstros: return 117
+        case .kansasCityRoyals: return 118
+        case .losAngelesDodgers: return 119
+        case .washingtonNationals: return 120
+        case .newYorkMets: return 121
+        case .oaklandAthletics: return 133
+        case .pittsburgPirates: return 134
+        case .sanDiegoPadres: return 135
+        case .seattleMariners: return 136
+        case .sanFranciscoGiants: return 137
+        case .stLouisCardinals: return 138
+        case .tampaBayRays: return 139
+        case .arlingtonRangers: return 140
+        case .torontoBlueJays: return 141
+        case .minnesotaTwins: return 142
+        case .philadelphiaPhillies: return 143
+        case .atlantaBraves: return 144
+        case .chicagoWhiteSox: return 145
+        case .miamiMarlins: return 146
+        case .newYorkYankees: return 147
+        case .milwaukeeBrewers: return 158
+            
+        }
+        
+    }
+    
 }
 
 enum Position: String {
