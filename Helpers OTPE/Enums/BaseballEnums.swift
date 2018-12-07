@@ -105,8 +105,8 @@ enum Position: String {
 
 enum Handedness: String {
     
-    case right = "Right"
-    case left = "Left"
-    case switchHit = "Switch"
+    case right = "R"
+    case left = "L"
+    case switchHit = "S"
     
 }

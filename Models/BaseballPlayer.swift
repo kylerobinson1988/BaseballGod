@@ -17,73 +17,71 @@ struct BaseballPlayer {
     var measurements: String?
     var team: Team?
     var birthday: String?
-    var draft: String?
-    var winsAboveReplacement: Double?
+    var winsAboveReplacement: String?
 
     // Pitcher
-    var wins: Int?
-    var losses: Int?
-    var earnedRunAverage: Double?
-    var gamesPitched: Int?
-    var gamesStarted: Int?
-    var saves: Int?
-    var inningsPitched: Double?
-    var strikeouts: Int?
-    var whip: Double?
+    var wins: String?
+    var losses: String?
+    var earnedRunAverage: String?
+    var gamesPitched: String?
+    var gamesStarted: String?
+    var saves: String?
+    var inningsPitched: String?
+    var strikeouts: String?
+    var whip: String?
     
     // Fielder
-    var atBats: Int?
-    var hits: Int?
-    var runs: Int?
-    var battingAverage: Double?
-    var homeRuns: Int?
-    var runsBattedIn: Int?
-    var stolenBases: Int?
-    var onBasePercentage: Double?
-    var sluggingPercentage: Double?
-    var onBasePlusSlugging: Double?
-    var opsPlus: Int?
+    var atBats: String?
+    var hits: String?
+    var runs: String?
+    var battingAverage: String?
+    var homeRuns: String?
+    var runsBattedIn: String?
+    var stolenBases: String?
+    var onBasePercentage: String?
+    var sluggingPercentage: String?
+    var onBasePlusSlugging: String?
+    var opsPlus: String?
     
-    init() {
-        
-        
-        
-    }
+    init() { }
     
-    mutating func parseFromDict(dict: [String:Any?]) {
+    static func parseFromDict(dict: [String:String]) -> BaseballPlayer {
         
-        name = dict["name"] as? String
-        position = Position(rawValue: (dict["position"] as? String ?? ""))
-        batsWith = Handedness(rawValue: dict["batsWith"] as? String ?? "")
-        throwsWith = Handedness(rawValue: dict["throwsWith"] as? String ?? "")
-        measurements = dict["measurements"] as? String
-        team = Team(rawValue: dict["team"] as? String ?? "")
-        birthday = dict["birthday"] as? String
-        draft = dict["draft"] as? String
-        winsAboveReplacement = dict["war"] as? Double
+        var newPlayer = BaseballPlayer()
         
-        wins = dict["wins"] as? Int
-        losses = dict["losses"] as? Int
-        earnedRunAverage = dict["era"] as? Double
-        gamesPitched = dict["gamesPitched"] as? Int
-        gamesStarted = dict["gamesStarted"] as? Int
-        saves = dict["saves"] as? Int
-        inningsPitched = dict["inningsPitched"] as? Double
-        strikeouts = dict["strikeouts"] as? Int
-        whip = dict["whip"] as? Double
+        newPlayer.name = dict["name_first_last"]
+        newPlayer.position = Position(rawValue: (dict["primary_position"]) ?? "")
+        newPlayer.batsWith = Handedness(rawValue: dict["bats"] ?? "")
+        newPlayer.throwsWith = Handedness(rawValue: dict["throws"] ?? "")
+        newPlayer.measurements = dict["measurements"]
+        newPlayer.team = Team(rawValue: dict["team_id"] ?? "")
+        newPlayer.birthday = dict["birth_date"]
+        newPlayer.winsAboveReplacement = dict["war"]
+        
+        newPlayer.wins = dict["wins"]
+        newPlayer.losses = dict["losses"]
+        newPlayer.earnedRunAverage = dict["era"]
+        newPlayer.gamesPitched = dict["gamesPitched"]
+        newPlayer.gamesStarted = dict["gamesStarted"]
+        newPlayer.saves = dict["saves"]
+        newPlayer.inningsPitched = dict["inningsPitched"]
+        newPlayer.strikeouts = dict["strikeouts"]
+        newPlayer.whip = dict["whip"]
         
         // Fielder
-        atBats = dict["atBats"] as? Int
-        hits = dict["hits"] as? Int
-        runs = dict["runs"] as? Int
-        battingAverage = dict["battingAverage"] as? Double
-        homeRuns = dict["homeRuns"] as? Int
-        runsBattedIn = dict["rbi"] as? Int
-        stolenBases = dict["sb"] as? Int
-        onBasePercentage = dict["obp"] as? Double
-        sluggingPercentage = dict["slg"] as? Double
-        onBasePlusSlugging = dict["ops"] as? Double
-        opsPlus = dict["ops+"] as? Int
+        newPlayer.atBats = dict["atBats"]
+        newPlayer.hits = dict["hits"]
+        newPlayer.runs = dict["runs"]
+        newPlayer.battingAverage = dict["battingAverage"]
+        newPlayer.homeRuns = dict["homeRuns"]
+        newPlayer.runsBattedIn = dict["rbi"]
+        newPlayer.stolenBases = dict["sb"]
+        newPlayer.onBasePercentage = dict["obp"]
+        newPlayer.sluggingPercentage = dict["slg"]
+        newPlayer.onBasePlusSlugging = dict["ops"]
+        newPlayer.opsPlus = dict["ops+"]
+        
+        return newPlayer
         
     }
     
