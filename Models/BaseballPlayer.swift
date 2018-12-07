@@ -10,7 +10,9 @@ import Foundation
 
 struct BaseballPlayer {
     
-    var name: String?
+    var fullName: String?
+    var firstName: String?
+    var lastName: String?
     var position: Position?
     var number: String?
     var batsWith: Handedness?
@@ -21,6 +23,8 @@ struct BaseballPlayer {
     var height: String?
     var weight: String?
     var winsAboveReplacement: String?
+    
+    var lookupName: String? { get { return "mlb-\(firstName ?? "none")-\(lastName ?? "none")" } }
     
     // Pitcher
     var wins: String?
@@ -52,7 +56,9 @@ struct BaseballPlayer {
         
         var newPlayer = BaseballPlayer()
         
-        newPlayer.name = "\(dict["first_name"] as? String ?? "") \(dict["last_name"] as? String ?? "")"
+        newPlayer.firstName = dict["first_name"] as? String ?? ""
+        newPlayer.lastName = dict["last_name"] as? String ?? ""
+        newPlayer.fullName = "\(dict["first_name"] as? String ?? "") \(dict["last_name"] as? String ?? "")"
         newPlayer.position = Position(rawValue: (dict["position_name"] as? String) ?? "")
         newPlayer.batsWith = Handedness(rawValue: dict["bats"] as? String ?? "")
         newPlayer.throwsWith = Handedness(rawValue: dict["handedness"] as? String ?? "")

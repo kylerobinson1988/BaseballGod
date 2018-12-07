@@ -8,9 +8,6 @@
 
 import Foundation
 
-// Token for Stattleship, doesn't seem to work
-//let api_accessToken = "61f7a43c9bf26dce4f5f2d0e318cf4f3"
-
 class StatService: NSObject {
     
     //Stattleship
@@ -19,7 +16,6 @@ class StatService: NSObject {
     // Set the below property to True for stub data
     private let useStubData: Bool
 
-//    private let endpoint = "http://lookup-service-prod.mlb.com"
     private let endpoint = "https://api.stattleship.com/baseball/mlb/"
     
     let defaultSession = URLSession(configuration: .default)
@@ -34,66 +30,7 @@ class StatService: NSObject {
         
     }
     
-    private func convertDataToJSON(_ data: Data?) -> [String:Any] {
-        
-        guard data != nil else { return [:] }
-        
-        do {
-            
-            let jsonOutput = try JSONSerialization.jsonObject(with: data!, options: []) as? [String:Any] ?? [:]
-            
-            print("~~~~ Output! \(jsonOutput)")
-            
-            return jsonOutput
-            
-        } catch {
-            
-            print("An error occurred when converting the data to JSON \(error).")
-            
-            let serverResponse = String(data: data!, encoding: String.Encoding.ascii)
-            
-            print("Server response: \(serverResponse)")
-            
-            return [:]
-            
-        }
-        
-    }
-    
-    private func createPlayersFromStubData(fileName: String, _ completion: ((Data?, URLResponse?, Error?) -> ())?) {
-        
-        guard let url = Bundle.main.url(forResource: fileName, withExtension: "json") else { return }
-        
-        let urlResponse = HTTPURLResponse.init(url: URL(string: "https://www.mlb.com")!, statusCode: 200, httpVersion: "", headerFields: nil)
-        
-        do {
-            
-            let jsonData = try Data(contentsOf: url)
-
-            completion?(jsonData, urlResponse, nil)
-
-        } catch {
-            print("An error occurred when try to convert the JSON data.")
-        }
-        
-    }
-    
-    private func createBaseballPlayersFromJSONData(_ json: [String: Any]) -> [BaseballPlayer] {
-        
-        guard let players = json["players"] as? [[String:Any]] else { return [] }
-        
-        var playerOutput: [BaseballPlayer] = []
-        
-        for player in players {
-            
-            let newPlayer = BaseballPlayer.parseFromDict(dict: player)
-            playerOutput.append(newPlayer)
-            
-        }
-        
-        return playerOutput
-        
-    }
+    // MARK: Methods used in each operation.
     
     private func buildWebRequest(uri: String, completion: ((Data?, URLResponse?, Error?) -> ())?) -> URLSessionDataTask? {
         
@@ -118,15 +55,78 @@ class StatService: NSObject {
         return dataTask
         
     }
+    
+    private func convertDataToJSON(_ data: Data?) -> [String:Any] {
+        
+        guard data != nil else { return [:] }
+        
+        do {
+            
+            let jsonOutput = try JSONSerialization.jsonObject(with: data!, options: []) as? [String:Any] ?? [:]
+            
+            print("~~~~ Output! \(jsonOutput)")
+            
+            return jsonOutput
+            
+        } catch {
+            
+            print("An error occurred when converting the data to JSON \(error).")
+            
+            let serverResponse = String(data: data!, encoding: String.Encoding.ascii)
+            
+            print("Server response: \(serverResponse ?? "")")
+            
+            return [:]
+            
+        }
+        
+    }
+    
+    private func getDataFromStubFile(fileName: String, _ completion: ((Data?, URLResponse?, Error?) -> ())?) {
+        
+        guard let url = Bundle.main.url(forResource: fileName, withExtension: "json") else { return }
+        
+        let urlResponse = HTTPURLResponse.init(url: URL(string: "https://www.mlb.com")!, statusCode: 200, httpVersion: "", headerFields: nil)
+        
+        do {
+            
+            let jsonData = try Data(contentsOf: url)
+            
+            completion?(jsonData, urlResponse, nil)
+            
+        } catch {
+            print("An error occurred when try to convert the JSON data.")
+        }
+        
+    }
+    
+    // MARK: - 40-Man Roster
+    
+    private func createArrayOfBaseballPlayersFromJSONData(_ json: [String: Any]) -> [BaseballPlayer] {
+        
+        guard let players = json["players"] as? [[String:Any]] else { return [] }
+        
+        var playerOutput: [BaseballPlayer] = []
+        
+        for player in players {
+            
+            let newPlayer = BaseballPlayer.parseFromDict(dict: player)
+            playerOutput.append(newPlayer)
+            
+        }
+        
+        return playerOutput
+        
+    }
 
     func get40ManRoster(team: Team, season: Int, rosterCompletion: (([BaseballPlayer]) -> ())?) {
         
         if useStubData {
             
-            createPlayersFromStubData(fileName: "stattleshipAstrosRoster") { data, response, error in
+            getDataFromStubFile(fileName: "stattleshipAstrosRoster") { data, response, error in
                 
                 let jsonData = self.convertDataToJSON(data)
-                let players = self.createBaseballPlayersFromJSONData(jsonData)
+                let players = self.createArrayOfBaseballPlayersFromJSONData(jsonData)
                 
                 rosterCompletion?(players)
                 
@@ -135,9 +135,6 @@ class StatService: NSObject {
             return
             
         }
-
-        // MLB Version
-//        let requestDetails = "/json/named.roster_team_alltime.bam?start_season='\(season)'&end_season='\(season)'&team_id='\(team.lookupValue)'"
         
         let requestDetails = "rosters?per_page=20&page=1&team_id=\(team.lookupValue)&season_id=mlb-\(season)"
         
@@ -159,7 +156,7 @@ class StatService: NSObject {
             }
             
             let jsonData = self.convertDataToJSON(data)
-            let players = self.createBaseballPlayersFromJSONData(jsonData)
+            let players = self.createArrayOfBaseballPlayersFromJSONData(jsonData)
             
             rosterCompletion?(players)
             
@@ -169,57 +166,132 @@ class StatService: NSObject {
         
     }
     
-    func getTeams(season: Int, _ completion: ((Data?, URLResponse?, Error?) -> ())?) {
+    // MARK - Get all teams.
+    
+    private func createBaseballTeamsFromJSONData(_ json: [String: Any]) -> [BaseballTeam] {
         
-        let requestDetails = "/json/named.team_all_season.bam?sport_code='mlb'&all_star_sw='N'&sort_order=name_asc&season='\(season)'"
+        guard let teams = json["teams"] as? [[String:Any]] else { return [] }
         
-        guard let myRequest = URL(string: endpoint + requestDetails) else { return }
+        var teamOutput: [BaseballTeam] = []
         
-        var request = URLRequest(url: myRequest)
-        
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = "GET"
-        
-        print("~~~ Request Info: \(request.description)")
-        
-        let session = URLSession.shared
-        
-        dataTask = session.dataTask(with: request, completionHandler: { data, response, error in
+        for team in teams {
             
-            guard completion != nil else { return }
-            completion?(data, response, error)
+            let newTeam = BaseballTeam.parseFromDict(dict: team)
+            teamOutput.append(newTeam)
             
-        })
+        }
         
-        dataTask?.resume()
+        return teamOutput
         
     }
     
-//    func getPlayer(name: String, _ completion: ((Data?, URLResponse?, Error?) -> ())?) {
-//
-//        let requestDetails = "/json/named.roster_40.bam?team_id='\(team.lookupValue)'"
-//
-//        guard let myRequest = URL(string: endpoint + requestDetails) else { return }
-//        var request = URLRequest(url: myRequest)
-//
-//        //        request.addValue("Token token=\(api_accessToken)", forHTTPHeaderField: "Authorization")
-//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.httpMethod = "GET"
-//
-//        print("~~~ Request Info: \(request.description)")
-//
-//        let session = URLSession.shared
-//
-//        dataTask = session.dataTask(with: request, completionHandler: { data, response, error in
-//
-//            guard completion != nil else { return }
-//            completion?(data, response, error)
-//
-//        })
-//
-//        dataTask?.resume()
-//
-//    }
+    func getTeams(_ completion: (([BaseballTeam]) -> ())?) {
+        
+        if useStubData {
+            
+            getDataFromStubFile(fileName: "stattleshipTeams") { data, response, error in
+                
+                let jsonData = self.convertDataToJSON(data)
+                let teams = self.createBaseballTeamsFromJSONData(jsonData)
+                
+                completion?(teams)
+                
+            }
+            
+            return
+            
+        }
+        
+        let requestDetails = "teams?per_page=30&page=1"
+        
+        let webRequest = buildWebRequest(uri: requestDetails) { data, response, error in
+            
+            guard error == nil else {
+                print("There was an error with the request")
+                return
+            }
+            
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 200 else {
+                print("Something went wrong. Status code not 200.")
+                return
+            }
+            
+            guard data != nil else {
+                print("Uh oh! No data.")
+                return
+            }
+            
+            let jsonData = self.convertDataToJSON(data)
+            let teams = self.createBaseballTeamsFromJSONData(jsonData)
+            
+            completion?(teams)
+            
+        }
+        
+        webRequest?.resume()
+        
+    }
+    
+    // MARK: - Get individual player info.
+    
+    private func createSingleBaseballPlayerDetailFromJSONData(player: BaseballPlayer, _ json: [String: Any]) -> BaseballPlayer? {
+        
+        guard let stats = json["player_season_stats"] as? [[String:Any]] else { return nil }
+        
+        var newPlayer = BaseballPlayer.parseFromDict(dict: stats.last ?? [:])
+
+        newPlayer.fullName = player.fullName
+        
+        return newPlayer
+        
+    }
+    
+    func getPlayerInfo(player: BaseballPlayer, team: Team, season: Int, rosterCompletion: (([BaseballPlayer]) -> ())?) {
+        
+        if useStubData {
+            
+            getDataFromStubFile(fileName: "stattleshipPitcherInfo") { data, response, error in
+                
+                let jsonData = self.convertDataToJSON(data)
+                let players = self.createArrayOfBaseballPlayersFromJSONData(jsonData)
+                
+                rosterCompletion?(players)
+                
+            }
+            
+            return
+            
+        }
+        
+        let requestDetails = "player_season_stats?season_id=mlb-\(season)&team_id=\(team.lookupValue)&player_id=\(player.lookupName)"
+        
+        let webRequest = buildWebRequest(uri: requestDetails) { data, response, error in
+            
+            guard error == nil else {
+                print("There was an error with the request")
+                return
+            }
+            
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 200 else {
+                print("Something went wrong. Status code not 200.")
+                return
+            }
+            
+            guard data != nil else {
+                print("Uh oh! No data.")
+                return
+            }
+            
+            let jsonData = self.convertDataToJSON(data)
+            let players = self.createArrayOfBaseballPlayersFromJSONData(jsonData)
+            
+            rosterCompletion?(players)
+            
+        }
+        
+        webRequest?.resume()
+        
+    }
     
     
 }
