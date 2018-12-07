@@ -47,40 +47,40 @@ enum Team: String {
     case arizonaDiamondbacks = "Arizona Diamondbacks"
     case coloradoRockies = "Colorado Rockies"
     
-    var lookupValue: Int {
+    var lookupValue: String {
         
         switch self {
             
-        case .losAngelesAngels: return 108
-        case .arizonaDiamondbacks: return 109
-        case .baltimoreOrioles: return 110
-        case .bostonRedSox: return 111
-        case .chicagoCubs: return 112
-        case .cincinnatiReds: return 113
-        case .clevelandIndians: return 114
-        case .coloradoRockies: return 115
-        case .detroitTigers: return 116
-        case .houstonAstros: return 117
-        case .kansasCityRoyals: return 118
-        case .losAngelesDodgers: return 119
-        case .washingtonNationals: return 120
-        case .newYorkMets: return 121
-        case .oaklandAthletics: return 133
-        case .pittsburgPirates: return 134
-        case .sanDiegoPadres: return 135
-        case .seattleMariners: return 136
-        case .sanFranciscoGiants: return 137
-        case .stLouisCardinals: return 138
-        case .tampaBayRays: return 139
-        case .arlingtonRangers: return 140
-        case .torontoBlueJays: return 141
-        case .minnesotaTwins: return 142
-        case .philadelphiaPhillies: return 143
-        case .atlantaBraves: return 144
-        case .chicagoWhiteSox: return 145
-        case .miamiMarlins: return 146
-        case .newYorkYankees: return 147
-        case .milwaukeeBrewers: return 158
+        case .losAngelesAngels: return "mlb-laa"
+        case .arizonaDiamondbacks: return "mlb-ari"
+        case .baltimoreOrioles: return "mlb-bal"
+        case .bostonRedSox: return "mlb-bos"
+        case .chicagoCubs: return "mlb-chc"
+        case .cincinnatiReds: return "mlb-cin"
+        case .clevelandIndians: return "mlb-cle"
+        case .coloradoRockies: return "mlb-col"
+        case .detroitTigers: return "mlb-det"
+        case .houstonAstros: return "mlb-hou"
+        case .kansasCityRoyals: return "mlb-kc"
+        case .losAngelesDodgers: return "mlb-la"
+        case .washingtonNationals: return "mlb-was"
+        case .newYorkMets: return "mlb-nym"
+        case .oaklandAthletics: return "mlb-oak"
+        case .pittsburgPirates: return "mlb-pit"
+        case .sanDiegoPadres: return "mlb-sd"
+        case .seattleMariners: return "mlb-sea"
+        case .sanFranciscoGiants: return "mlb-sf"
+        case .stLouisCardinals: return "mlb-stl"
+        case .tampaBayRays: return "mlb-tb"
+        case .arlingtonRangers: return "mlb-tex"
+        case .torontoBlueJays: return "mlb-tor"
+        case .minnesotaTwins: return "mlb-min"
+        case .philadelphiaPhillies: return "mlb-phi"
+        case .atlantaBraves: return "mlb-atl"
+        case .chicagoWhiteSox: return "mlb-chw"
+        case .miamiMarlins: return "mlb-mia"
+        case .newYorkYankees: return "mlb-nyy"
+        case .milwaukeeBrewers: return "mlb-mil"
             
         }
         
@@ -105,8 +105,8 @@ enum Position: String {
 
 enum Handedness: String {
     
-    case right = "R"
-    case left = "L"
-    case switchHit = "S"
+    case right = "right"
+    case left = "left"
+    case switchHit = "switch"
     
 }

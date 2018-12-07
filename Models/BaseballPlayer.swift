@@ -12,13 +12,16 @@ struct BaseballPlayer {
     
     var name: String?
     var position: Position?
+    var number: String?
     var batsWith: Handedness?
     var throwsWith: Handedness?
     var measurements: String?
     var team: Team?
     var birthday: String?
+    var height: String?
+    var weight: String?
     var winsAboveReplacement: String?
-
+    
     // Pitcher
     var wins: String?
     var losses: String?
@@ -45,41 +48,42 @@ struct BaseballPlayer {
     
     init() { }
     
-    static func parseFromDict(dict: [String:String]) -> BaseballPlayer {
+    static func parseFromDict(dict: [String:Any]) -> BaseballPlayer {
         
         var newPlayer = BaseballPlayer()
         
-        newPlayer.name = dict["name_first_last"]
-        newPlayer.position = Position(rawValue: (dict["primary_position"]) ?? "")
-        newPlayer.batsWith = Handedness(rawValue: dict["bats"] ?? "")
-        newPlayer.throwsWith = Handedness(rawValue: dict["throws"] ?? "")
-        newPlayer.measurements = dict["measurements"]
-        newPlayer.team = Team(rawValue: dict["team_id"] ?? "")
-        newPlayer.birthday = dict["birth_date"]
-        newPlayer.winsAboveReplacement = dict["war"]
+        newPlayer.name = "\(dict["first_name"] as? String ?? "") \(dict["last_name"] as? String ?? "")"
+        newPlayer.position = Position(rawValue: (dict["position_name"] as? String) ?? "")
+        newPlayer.batsWith = Handedness(rawValue: dict["bats"] as? String ?? "")
+        newPlayer.throwsWith = Handedness(rawValue: dict["handedness"] as? String ?? "")
+        newPlayer.number = dict["uniform_number"] as? String
+        newPlayer.height = "\(dict["height"] as? Int ?? 0) inches"
+        newPlayer.weight = "\(dict["weight"] as? Int ?? 0) pounds"
+        newPlayer.birthday = dict["birth_date"] as? String
+        newPlayer.winsAboveReplacement = dict["war"] as? String
         
-        newPlayer.wins = dict["wins"]
-        newPlayer.losses = dict["losses"]
-        newPlayer.earnedRunAverage = dict["era"]
-        newPlayer.gamesPitched = dict["gamesPitched"]
-        newPlayer.gamesStarted = dict["gamesStarted"]
-        newPlayer.saves = dict["saves"]
-        newPlayer.inningsPitched = dict["inningsPitched"]
-        newPlayer.strikeouts = dict["strikeouts"]
-        newPlayer.whip = dict["whip"]
+        newPlayer.wins = dict["wins"] as? String
+        newPlayer.losses = dict["losses"] as? String
+        newPlayer.earnedRunAverage = dict["era"] as? String
+        newPlayer.gamesPitched = dict["gamesPitched"] as? String
+        newPlayer.gamesStarted = dict["gamesStarted"] as? String
+        newPlayer.saves = dict["saves"] as? String
+        newPlayer.inningsPitched = dict["inningsPitched"] as? String
+        newPlayer.strikeouts = dict["strikeouts"] as? String
+        newPlayer.whip = dict["whip"] as? String
         
         // Fielder
-        newPlayer.atBats = dict["atBats"]
-        newPlayer.hits = dict["hits"]
-        newPlayer.runs = dict["runs"]
-        newPlayer.battingAverage = dict["battingAverage"]
-        newPlayer.homeRuns = dict["homeRuns"]
-        newPlayer.runsBattedIn = dict["rbi"]
-        newPlayer.stolenBases = dict["sb"]
-        newPlayer.onBasePercentage = dict["obp"]
-        newPlayer.sluggingPercentage = dict["slg"]
-        newPlayer.onBasePlusSlugging = dict["ops"]
-        newPlayer.opsPlus = dict["ops+"]
+        newPlayer.atBats = dict["atBats"] as? String
+        newPlayer.hits = dict["hits"] as? String
+        newPlayer.runs = dict["runs"] as? String
+        newPlayer.battingAverage = dict["battingAverage"] as? String
+        newPlayer.homeRuns = dict["homeRuns"] as? String
+        newPlayer.runsBattedIn = dict["rbi"] as? String
+        newPlayer.stolenBases = dict["sb"] as? String
+        newPlayer.onBasePercentage = dict["obp"] as? String
+        newPlayer.sluggingPercentage = dict["slg"] as? String
+        newPlayer.onBasePlusSlugging = dict["ops"] as? String
+        newPlayer.opsPlus = dict["ops+"] as? String
         
         return newPlayer
         

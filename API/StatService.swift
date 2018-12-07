@@ -13,10 +13,14 @@ import Foundation
 
 class StatService: NSObject {
     
+    //Stattleship
+    let token = "61f7a43c9bf26dce4f5f2d0e318cf4f3"
+    
     // Set the below property to True for stub data
     private let useStubData: Bool
 
-    private let endpoint = "http://lookup-service-prod.mlb.com"
+//    private let endpoint = "http://lookup-service-prod.mlb.com"
+    private let endpoint = "https://api.stattleship.com/baseball/mlb/"
     
     let defaultSession = URLSession(configuration: .default)
 
@@ -33,10 +37,10 @@ class StatService: NSObject {
     private func convertDataToJSON(_ data: Data?) -> [String:Any] {
         
         guard data != nil else { return [:] }
-
+        
         do {
             
-            let jsonOutput = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? [String:Any] ?? [:]
+            let jsonOutput = try JSONSerialization.jsonObject(with: data!, options: []) as? [String:Any] ?? [:]
             
             print("~~~~ Output! \(jsonOutput)")
             
@@ -44,7 +48,12 @@ class StatService: NSObject {
             
         } catch {
             
-            print("An error occurred when converting the data to JSON. Check your filename and try again.")
+            print("An error occurred when converting the data to JSON \(error).")
+            
+            let serverResponse = String(data: data!, encoding: String.Encoding.ascii)
+            
+            print("Server response: \(serverResponse)")
+            
             return [:]
             
         }
@@ -71,13 +80,11 @@ class StatService: NSObject {
     
     private func createBaseballPlayersFromJSONData(_ json: [String: Any]) -> [BaseballPlayer] {
         
-        guard let roster = json["roster_team_alltime"] as? [String:Any] else { return [] }
-        guard let queryResults = roster["queryResults"] as? [String:Any] else { return [] }
-        guard let playerList = queryResults["row"] as? [[String:String]] else { return [] }
+        guard let players = json["players"] as? [[String:Any]] else { return [] }
         
         var playerOutput: [BaseballPlayer] = []
         
-        for player in playerList {
+        for player in players {
             
             let newPlayer = BaseballPlayer.parseFromDict(dict: player)
             playerOutput.append(newPlayer)
@@ -93,7 +100,9 @@ class StatService: NSObject {
         guard let myRequest = URL(string: endpoint + uri) else { return nil }
         var request = URLRequest(url: myRequest)
         
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Token token=61f7a43c9bf26dce4f5f2d0e318cf4f3", forHTTPHeaderField: "Authorization")
+        request.addValue("application/vnd.stattleship.com; version=1", forHTTPHeaderField: "Accept")
         request.httpMethod = "GET"
         
         print("~~~ Request Info: \(request.description)")
@@ -114,7 +123,7 @@ class StatService: NSObject {
         
         if useStubData {
             
-            createPlayersFromStubData(fileName: "Astros40Man") { data, response, error in
+            createPlayersFromStubData(fileName: "stattleshipAstrosRoster") { data, response, error in
                 
                 let jsonData = self.convertDataToJSON(data)
                 let players = self.createBaseballPlayersFromJSONData(jsonData)
@@ -126,8 +135,11 @@ class StatService: NSObject {
             return
             
         }
+
+        // MLB Version
+//        let requestDetails = "/json/named.roster_team_alltime.bam?start_season='\(season)'&end_season='\(season)'&team_id='\(team.lookupValue)'"
         
-        let requestDetails = "/json/named.roster_team_alltime.bam?start_season='\(season)'&end_season='\(season)'&team_id='\(team.lookupValue)'"
+        let requestDetails = "rosters?per_page=20&page=1&team_id=\(team.lookupValue)&season_id=mlb-\(season)"
         
         let webRequest = buildWebRequest(uri: requestDetails) { data, response, error in
             
