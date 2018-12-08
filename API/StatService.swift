@@ -234,28 +234,31 @@ class StatService: NSObject {
     
     // MARK: - Get individual player info.
     
-    private func createSingleBaseballPlayerDetailFromJSONData(player: BaseballPlayer, _ json: [String: Any]) -> BaseballPlayer? {
+    private func createPlayerStatsFromJSONData(isPitcher: Bool, _ json: [String: Any]) -> [PlayerStats] {
         
-        guard let stats = json["player_season_stats"] as? [[String:Any]] else { return nil }
+        guard let stats = json["player_season_stats"] as? [[String:Any]] else { return [] }
         
-        var newPlayer = BaseballPlayer.parseFromDict(dict: stats.last ?? [:])
-
-        newPlayer.fullName = player.fullName
+        let statCollection: [PlayerStats] = stats.map {
+            
+            return PlayerStats(isPitcher: isPitcher, infoDict: $0)
+            
+        }
         
-        return newPlayer
+        return statCollection
         
     }
     
-    func getPlayerInfo(player: BaseballPlayer, team: Team, season: Int, rosterCompletion: (([BaseballPlayer]) -> ())?) {
+    func getPlayerStats(player: BaseballPlayer, team: Team, season: Int, completion: (([PlayerStats]) -> ())?) {
         
         if useStubData {
             
-            getDataFromStubFile(fileName: "stattleshipPitcherInfo") { data, response, error in
+            // Charlie Morton is the pitcher in the JSON file below.
+            getDataFromStubFile(fileName: "stattleshipPitcherStats") { data, response, error in
                 
                 let jsonData = self.convertDataToJSON(data)
-                let players = self.createArrayOfBaseballPlayersFromJSONData(jsonData)
+                let stats = self.createPlayerStatsFromJSONData(isPitcher: player.isPitcher, jsonData)
                 
-                rosterCompletion?(players)
+                completion?(stats)
                 
             }
             
@@ -263,7 +266,7 @@ class StatService: NSObject {
             
         }
         
-        let requestDetails = "player_season_stats?season_id=mlb-\(season)&team_id=\(team.lookupValue)&player_id=\(player.lookupName)"
+        let requestDetails = "player_season_stats?season_id=mlb-\(season)&team_id=\(team.lookupValue)&player_id=\(player.lookupName ?? "")"
         
         let webRequest = buildWebRequest(uri: requestDetails) { data, response, error in
             
@@ -283,9 +286,9 @@ class StatService: NSObject {
             }
             
             let jsonData = self.convertDataToJSON(data)
-            let players = self.createArrayOfBaseballPlayersFromJSONData(jsonData)
+            let stats = self.createPlayerStatsFromJSONData(isPitcher: player.isPitcher, jsonData)
             
-            rosterCompletion?(players)
+            completion?(stats)
             
         }
         

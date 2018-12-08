@@ -24,7 +24,13 @@ struct BaseballPlayer {
     var weight: String?
     var winsAboveReplacement: String?
     
-    var lookupName: String? { get { return "mlb-\(firstName ?? "none")-\(lastName ?? "none")" } }
+    var lookupName: String? { get { return "mlb-\(firstName?.lowercased() ?? "none")-\(lastName?.lowercased() ?? "none")" } }
+    
+    var isPitcher: Bool {
+        
+        get { return position == Position.pitcher ? true : false }
+        
+    }
     
     // Pitcher
     var wins: String?
