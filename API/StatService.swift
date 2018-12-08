@@ -106,12 +106,9 @@ class StatService: NSObject {
         
         guard let players = json["players"] as? [[String:Any]] else { return [] }
         
-        var playerOutput: [BaseballPlayer] = []
-        
-        for player in players {
+        let playerOutput: [BaseballPlayer] = players.map {
             
-            let newPlayer = BaseballPlayer.parseFromDict(dict: player)
-            playerOutput.append(newPlayer)
+            return BaseballPlayer.parseFromDict(dict: $0)
             
         }
         
@@ -172,12 +169,9 @@ class StatService: NSObject {
         
         guard let teams = json["teams"] as? [[String:Any]] else { return [] }
         
-        var teamOutput: [BaseballTeam] = []
-        
-        for team in teams {
+        let teamOutput: [BaseballTeam] = teams.map {
             
-            let newTeam = BaseballTeam.parseFromDict(dict: team)
-            teamOutput.append(newTeam)
+            return BaseballTeam.parseFromDict(dict: $0)
             
         }
         

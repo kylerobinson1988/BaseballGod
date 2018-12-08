@@ -9,7 +9,7 @@
 import Foundation
 import  UIKit
 
-class PlayerStats {
+struct PlayerStats {
     
     var isPitcher: Bool
     var dateOfStats: String?
@@ -57,7 +57,7 @@ class PlayerStats {
 
     }
     
-    private func parseForPitcher(dict: [String:Any]) {
+    private mutating func parseForPitcher(dict: [String:Any]) {
         
         dateOfStats = dict["statistics_on"] as? String
         wildPitches = dict["wild_pitches"] as? Int
@@ -79,7 +79,7 @@ class PlayerStats {
         
     }
     
-    private func parseForHitter(dict: [String:Any]) {
+    private mutating func parseForHitter(dict: [String:Any]) {
 
         dateOfStats = dict["statistics_on"] as? String
         atBats = dict["at_bats"] as? Int
