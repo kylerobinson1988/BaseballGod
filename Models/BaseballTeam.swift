@@ -11,30 +11,23 @@ import  UIKit
 
 struct BaseballTeam {
     
-    var name: String?
+    var team: Team?
+    var name: String? { get { return team?.displayName ?? "N/A" } }
     var colors: [UIColor] = []
+    var image: UIImage? { get { return UIImage(named: team?.rawValue ?? "") } }
     
-    init() { }
-    
-    static func parseFromDict(dict: [String:Any]) -> BaseballTeam {
+    init(dict: [String:Any]) {
         
-        var newTeam = BaseballTeam()
-        
-        newTeam.name = "\(dict["name"] as? String ?? "") \(dict["nickname"] as? String ?? "")"
-        newTeam.colors = createColorsForTeam(dict["colors"] as? [String] ?? [])
-        
-        return newTeam
+        team = Team(rawValue: dict["slug"] as? String ?? "")
+        colors = createColorsForTeam(dict["colors"] as? [String] ?? [])
         
     }
     
-    private static func createColorsForTeam(_ colors: [String]) -> [UIColor] {
+    private func createColorsForTeam(_ colors: [String]) -> [UIColor] {
         
-        var output: [UIColor] = []
-        
-        for colorCode in colors {
+        let output: [UIColor] = colors.map {
             
-            let newColor = UIColor.fromRGB(colorCode: colorCode)
-            output.append(newColor)
+            return UIColor.fromRGB(colorCode: $0)
             
         }
         

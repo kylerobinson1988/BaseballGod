@@ -133,7 +133,7 @@ class StatService: NSObject {
             
         }
         
-        let requestDetails = "rosters?per_page=20&page=1&team_id=\(team.lookupValue)&season_id=mlb-\(season)"
+        let requestDetails = "rosters?per_page=20&page=1&team_id=\(team.rawValue)&season_id=mlb-\(season)"
         
         let webRequest = buildWebRequest(uri: requestDetails) { data, response, error in
             
@@ -171,7 +171,7 @@ class StatService: NSObject {
         
         let teamOutput: [BaseballTeam] = teams.map {
             
-            return BaseballTeam.parseFromDict(dict: $0)
+            return BaseballTeam(dict: $0)
             
         }
         
@@ -260,7 +260,7 @@ class StatService: NSObject {
             
         }
         
-        let requestDetails = "player_season_stats?season_id=mlb-\(season)&team_id=\(team.lookupValue)&player_id=\(player.lookupName ?? "")"
+        let requestDetails = "player_season_stats?season_id=mlb-\(season)&team_id=\(team.rawValue)&player_id=\(player.lookupName ?? "")"
         
         let webRequest = buildWebRequest(uri: requestDetails) { data, response, error in
             
