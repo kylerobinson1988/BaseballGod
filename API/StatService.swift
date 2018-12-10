@@ -34,8 +34,8 @@ class StatService: NSObject {
     
     private func buildWebRequest(uri: String, completion: ((Data?, URLResponse?, Error?) -> ())?) -> URLSessionDataTask? {
         
-        guard let myRequest = URL(string: endpoint + uri) else { return nil }
-        var request = URLRequest(url: myRequest)
+        guard let requestUrl = URL(string: endpoint + uri) else { return nil }
+        var request = URLRequest(url: requestUrl)
         
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("Token token=61f7a43c9bf26dce4f5f2d0e318cf4f3", forHTTPHeaderField: "Authorization")
@@ -108,7 +108,7 @@ class StatService: NSObject {
         
         let playerOutput: [BaseballPlayer] = players.map {
             
-            return BaseballPlayer.parseFromDict(dict: $0)
+            return BaseballPlayer(dict: $0)
             
         }
         
