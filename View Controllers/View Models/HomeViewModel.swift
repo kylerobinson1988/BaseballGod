@@ -10,20 +10,17 @@ import Foundation
 
 class HomeViewModel {
     
-    private let service: StatService
-    
     var teams: [BaseballTeam] = []
     
     init() {
         
         // Init service
-        service = StatService(useStubData: useStubData)
         
     }
     
     func getTeams(completion: (()->())?) {
         
-        service.getTeams { teams in
+        BaseballService.shared.getTeams { teams in
             
             self.teams = teams
             completion?()

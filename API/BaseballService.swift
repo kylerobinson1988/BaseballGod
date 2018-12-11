@@ -1,5 +1,5 @@
 //
-//  StatService.swift
+//  BaseballService.swift
 //  BaseballGod
 //
 //  Created by Kyle Brooks Robinson on 12/4/18.
@@ -8,27 +8,20 @@
 
 import Foundation
 
-class StatService: NSObject {
+class BaseballService {
     
-    //Stattleship
+    // Singleton
+    static let shared = BaseballService()
+    
+    //Stattleship API Token
     let token = "61f7a43c9bf26dce4f5f2d0e318cf4f3"
     
     // Set the below property to True for stub data
-    private let useStubData: Bool
+    var useStubData: Bool = false
 
     private let endpoint = "https://api.stattleship.com/baseball/mlb/"
-    
-    let defaultSession = URLSession(configuration: .default)
-
-    var dataTask: URLSessionDataTask?
-    
-    var session: URLSession!
-    
-    init(useStubData: Bool) {
         
-        self.useStubData = useStubData
-        
-    }
+    private init() { }
     
     // MARK: Methods used in each operation.
     

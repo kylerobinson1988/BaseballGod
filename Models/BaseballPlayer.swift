@@ -35,7 +35,7 @@ struct BaseballPlayer {
         
         firstName = dict["first_name"] as? String
         lastName = dict["last_name"] as? String
-        position = Position(rawValue: (dict["position_name"] as? String) ?? "")
+        position = Position(rawValue: (dict["position_abbreviation"] as? String) ?? "")
         batsWith = dict["bats"] as? String ?? ""
         throwsWith = dict["handedness"] as? String
         number = dict["uniform_number"] as? String

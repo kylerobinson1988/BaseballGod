@@ -90,16 +90,41 @@ enum Team: String {
 
 enum Position: String {
     
-    case pitcher = "Pitcher"
-    case catcher = "Catcher"
-    case firstBase = "First Base"
-    case secondBase = "Second Base"
-    case thirdBase = "Third Base"
-    case shortstop = "Shortstop"
-    case leftField = "Left Field"
-    case centerField = "Center Field"
-    case rightField = "Right Field"
-    case designatedHitter = "Designated Hitter"
+    case pitcher = "P"
+    case startingPitcher = "SP"
+    case reliefPitcher = "RP"
+    case catcher = "C"
+    case firstBase = "1B"
+    case secondBase = "2B"
+    case thirdBase = "3B"
+    case shortstop = "SS"
+    case leftField = "LF"
+    case centerField = "CF"
+    case rightField = "RF"
+    case outfield = "OF"
+    case designatedHitter = "DH"
+    
+    var fullName: String {
+        
+        switch self {
+            
+        case .pitcher: return "Pitcher"
+        case .startingPitcher: return "Starting Pitcher"
+        case .reliefPitcher: return "Relief Pitcher"
+        case .catcher: return "Catcher"
+        case .firstBase: return "First Base"
+        case .secondBase: return "Second Base"
+        case .thirdBase: return "Third Base"
+        case .shortstop: return "Shortstop"
+        case .leftField: return "Left Field"
+        case .centerField: return "Center Field"
+        case .rightField: return "Right Field"
+        case .outfield: return "Outfield"
+        case .designatedHitter: return "Designated Hitter"
+            
+        }
+        
+    }
     
 }
 

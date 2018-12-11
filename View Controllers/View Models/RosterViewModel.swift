@@ -7,3 +7,28 @@
 //
 
 import Foundation
+
+class RosterViewModel {
+    
+    var selectedTeam: BaseballTeam!
+    
+    var players: [BaseballPlayer] = []
+    
+    init() {
+        
+    }
+    
+    func getPlayers(completion: (()->())?) {
+        
+        guard selectedTeam.team != nil else { return }
+        
+        BaseballService.shared.get40ManRoster(team: selectedTeam.team!, season: 2018, rosterCompletion: { players in
+            
+            self.players = players
+            completion?()
+            
+        })
+        
+    }
+    
+}

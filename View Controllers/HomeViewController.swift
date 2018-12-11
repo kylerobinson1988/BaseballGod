@@ -10,26 +10,45 @@ import UIKit
 
 class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     @IBOutlet weak var tableView: UITableView!
     
     var viewModel: HomeViewModel?
     
+    var selectedIndex: Int = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.tableFooterView = UIView(frame: CGRect.zero)
+        tableViewSetup()
+        
+        loadingIndicator.startAnimating()
         
         viewModel = HomeViewModel()
         
         viewModel?.getTeams(completion: {
-            self.tableView.reloadData()
+            
+            DispatchQueue.main.async {
+                self.reloadTableView()
+            }
+            
         })
 
     }
     
+    // MARK: - Setup Methods
+
+    
     // MARK: - Table View Methods
+    
+    func tableViewSetup() {
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.tableFooterView = UIView(frame: CGRect.zero)
+        
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -48,9 +67,45 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
     }
     
+    func reloadTableView() {
+        
+        self.tableView.reloadData()
+        showHideIndicator(show: false)
+        
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        selectedIndex = indexPath.row
         
+        performSegue(withIdentifier: "showPlayersSegue", sender: self)
+        
+    }
+    
+    func showHideIndicator(show: Bool) {
+        
+        if show {
+          
+            loadingIndicator.isHidden = false
+            loadingIndicator.startAnimating()
+            
+        } else {
+            
+            loadingIndicator.isHidden = true
+            loadingIndicator.stopAnimating()
+            
+        }
+        
+    }
+    
+    // MARK: - Segue
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        guard let rosterVC = segue.destination as? RosterViewController else { return }
+        
+        rosterVC.viewModel = RosterViewModel()
+        rosterVC.viewModel?.selectedTeam = self.viewModel?.teams[selectedIndex]
         
     }
 
