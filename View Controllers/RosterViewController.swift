@@ -23,6 +23,10 @@ class RosterViewController: UIViewController, UITableViewDataSource, UITableView
         
         teamNameLabel.text = viewModel?.selectedTeam.name ?? "Team Name"
         
+        if let colors = viewModel?.selectedTeam.colors, colors.count > 1 {
+            teamNameLabel.textColor = colors[1]
+        }
+        
         tableViewSetup()
         
         loadingIndicator.startAnimating()
@@ -36,10 +40,7 @@ class RosterViewController: UIViewController, UITableViewDataSource, UITableView
         })
         
     }
-    
-    // MARK: - Setup Methods
-    
-    
+
     // MARK: - Table View Methods
     
     func tableViewSetup() {
@@ -61,6 +62,10 @@ class RosterViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "playerCell", for: indexPath) as? PlayerCell else { return UITableViewCell() }
+        
+        if let colorForLabel = viewModel?.selectedTeam.colors, colorForLabel.count > 0 {
+            cell.color = colorForLabel[0]
+        }
         
         cell.player = viewModel?.players[indexPath.row]
         
@@ -103,10 +108,11 @@ class RosterViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        guard let statVC = segue.destination as? StatViewController else { return }
+        guard let statVC = segue.destination as? StatOverviewViewController else { return }
         
-//        rosterVC.viewModel = RosterViewModel()
-//        rosterVC.viewModel?.selectedTeam = self.viewModel?.teams[selectedIndex]
+        statVC.viewModel = StatOverviewViewModel()
+        statVC.viewModel?.selectedPlayer = self.viewModel?.players[selectedIndex]
+        statVC.viewModel?.selectedTeam = self.viewModel?.selectedTeam
         
     }
 
@@ -119,11 +125,13 @@ class PlayerCell: UITableViewCell {
     
 //    @IBOutlet weak var backgroundRoundedView: RoundedView!
     
+    var color: UIColor?
     var player: BaseballPlayer? { didSet { configureCell() } }
     
     private func configureCell() {
         
         playerNameLabel.text = "\(player?.firstName ?? "") \(player?.lastName ?? "")"
+        playerNameLabel.textColor = color != nil ? color : UIColor.black
         playerPositionLabel.text = "\(player?.position?.rawValue ?? "")"
         
     }

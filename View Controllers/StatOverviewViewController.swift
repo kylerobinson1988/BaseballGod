@@ -1,39 +1,40 @@
 //
-//  HomeViewController.swift
+//  StatOverviewViewController.swift
 //  BaseballGod
 //
-//  Created by Kyle Brooks Robinson on 12/4/18.
+//  Created by Kyle Brooks Robinson on 12/10/18.
 //  Copyright © 2018 Rocktransformed. All rights reserved.
 //
 
 import UIKit
 
-class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class StatOverviewViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var playerNameLabel: UILabel!
     
-    var viewModel: HomeViewModel?
+    var viewModel: StatOverviewViewModel?
     
     var selectedIndex: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        playerNameLabel.text = "\(viewModel?.selectedPlayer?.firstName ?? "") \(viewModel?.selectedPlayer?.lastName ?? "")"
+        
         tableViewSetup()
         
         loadingIndicator.startAnimating()
         
-        viewModel = HomeViewModel()
-        
-        viewModel?.getTeams(completion: {
+        viewModel?.getStats(completion: {
             
             DispatchQueue.main.async {
                 self.reloadTableView()
             }
             
         })
-
+        
     }
     
     // MARK: - Table View Methods
@@ -51,14 +52,18 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel?.teams.count ?? 0
+        return viewModel?.stats.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "teamCell", for: indexPath) as? TeamCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "statCell", for: indexPath) as? StatCell else { return UITableViewCell() }
         
-        cell.team = viewModel?.teams[indexPath.row]
+        if let colorForLabel = viewModel?.selectedTeam?.colors, colorForLabel.count > 0 {
+            cell.color = colorForLabel[0]
+        }
+        
+        cell.stat = viewModel?.stats[indexPath.row]
         
         return cell
         
@@ -75,14 +80,14 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         selectedIndex = indexPath.row
         
-        performSegue(withIdentifier: "showPlayersSegue", sender: self)
+        performSegue(withIdentifier: "showStatDetailSegue", sender: self)
         
     }
     
     func showHideIndicator(show: Bool) {
         
         if show {
-          
+            
             loadingIndicator.isHidden = false
             loadingIndicator.startAnimating()
             
@@ -95,32 +100,31 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
     }
     
-    // MARK: - Segue
+    // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        guard let rosterVC = segue.destination as? RosterViewController else { return }
+        guard let statDetailsVC = segue.destination as? StatDetailViewController else { return }
         
-        rosterVC.viewModel = RosterViewModel()
-        rosterVC.viewModel?.selectedTeam = self.viewModel?.teams[selectedIndex]
+        statDetailsVC.viewModel = StatDetailViewModel()
+        statDetailsVC.viewModel?.stat = viewModel?.stats[selectedIndex]
+        statDetailsVC.viewModel?.textForTopLabel = "\(viewModel?.selectedPlayer?.firstName ?? "") \(viewModel?.selectedPlayer?.lastName ?? "") on \(viewModel?.stats[selectedIndex].dateOfStats ?? "Date N/A")"
         
     }
 
 }
 
-class TeamCell: UITableViewCell {
+class StatCell: UITableViewCell {
     
-    @IBOutlet weak var teamLogoView: UIImageView!
-    @IBOutlet weak var teamNameLabel: UILabel!
-    @IBOutlet weak var backgroundRoundedView: RoundedView!
+    @IBOutlet weak var statDateLabel: UILabel!
     
-    var team: BaseballTeam? { didSet { configureCell() } }
+    var stat: PlayerStats? { didSet { configureCell() } }
+    var color: UIColor?
     
     private func configureCell() {
         
-        teamLogoView.image = team?.image
-        teamNameLabel.text = team?.name
-        teamNameLabel.textColor = team?.colors[0]
+        statDateLabel.text = "\(stat?.dateOfStats ?? "Date N/A")"
+        statDateLabel.textColor = color != nil ? color : UIColor.black
         
     }
     

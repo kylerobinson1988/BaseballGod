@@ -49,9 +49,13 @@ struct PlayerStats {
     var slugging: Double?
     var gamesFielded: Int?
     
+    var rawDataDict: [String:Any] = [:]
+    
     init(isPitcher: Bool, infoDict: [String:Any]) {
         
         self.isPitcher = isPitcher
+        
+        rawDataDict = infoDict
         
         isPitcher ? parseForPitcher(dict: infoDict) : parseForHitter(dict: infoDict)
 

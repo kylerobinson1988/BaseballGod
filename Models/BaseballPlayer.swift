@@ -12,6 +12,7 @@ struct BaseballPlayer {
     
     var firstName: String?
     var lastName: String?
+    var lookupName: String?
     var position: Position?
     var number: String?
     var batsWith: String?
@@ -23,7 +24,6 @@ struct BaseballPlayer {
     var weight: Int?
     var winsAboveReplacement: String?
     
-    var lookupName: String? { get { return "mlb-\(firstName?.lowercased() ?? "none")-\(lastName?.lowercased() ?? "none")" } }
     
     var isPitcher: Bool {
         
@@ -35,6 +35,7 @@ struct BaseballPlayer {
         
         firstName = dict["first_name"] as? String
         lastName = dict["last_name"] as? String
+        lookupName = dict["slug"] as? String
         position = Position(rawValue: (dict["position_abbreviation"] as? String) ?? "")
         batsWith = dict["bats"] as? String ?? ""
         throwsWith = dict["handedness"] as? String
