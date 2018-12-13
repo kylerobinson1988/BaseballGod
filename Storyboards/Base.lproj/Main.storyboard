@@ -199,91 +199,12 @@
                         <outlet property="loadingIndicator" destination="IR6-me-YEL" id="9kb-3j-jpI"/>
                         <outlet property="tableView" destination="1vr-NV-SaM" id="336-y0-vJn"/>
                         <outlet property="teamNameLabel" destination="9hO-A7-XVr" id="fmV-SW-hq2"/>
-                        <segue destination="Byn-pz-Fan" kind="show" identifier="showStatsSegue" id="hdW-SO-i08"/>
+                        <segue destination="dg3-Aq-cq2" kind="show" identifier="showStatsSegue" id="K1l-I8-gFl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kav-5X-hPD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1872.8" y="132.68365817091455"/>
-        </scene>
-        <!--Stat Overview View Controller-->
-        <scene sceneID="wMe-49-p2Q">
-            <objects>
-                <viewController id="Byn-pz-Fan" customClass="StatOverviewViewController" customModule="BaseballGod" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="O6v-qA-jfV">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Player Stats" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bN6-1y-hqf">
-                                <rect key="frame" x="20" y="20" width="335" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="8ro-N7-Tig"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Rockwell-Regular" family="Rockwell" pointSize="22"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cvv-vu-TL8">
-                                <rect key="frame" x="0.0" y="70" width="375" height="533"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="statCell" rowHeight="35" id="dN0-Oe-mHp" customClass="StatCell" customModule="BaseballGod" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="35"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dN0-Oe-mHp" id="LDh-0r-SpI">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="34.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pH1-BE-2eA" customClass="DateCell">
-                                                    <rect key="frame" x="15" y="5" width="114.5" height="24.5"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="24.5" id="5UV-aZ-keB"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="19"/>
-                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="pH1-BE-2eA" firstAttribute="leading" secondItem="LDh-0r-SpI" secondAttribute="leading" constant="15" id="1Uq-LF-efq"/>
-                                                <constraint firstAttribute="bottom" secondItem="pH1-BE-2eA" secondAttribute="bottom" constant="5" id="a5A-Gw-PxO"/>
-                                                <constraint firstItem="pH1-BE-2eA" firstAttribute="top" secondItem="LDh-0r-SpI" secondAttribute="top" constant="5" id="fBs-48-Sia"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="statDateLabel" destination="pH1-BE-2eA" id="ghB-ST-ma7"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ilL-c2-beN">
-                                <rect key="frame" x="177.5" y="291.5" width="20" height="20"/>
-                            </activityIndicatorView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="bN6-1y-hqf" firstAttribute="top" secondItem="0zH-ZT-Nqe" secondAttribute="top" constant="20" id="Dvo-Xf-wiU"/>
-                            <constraint firstItem="cvv-vu-TL8" firstAttribute="top" secondItem="bN6-1y-hqf" secondAttribute="bottom" constant="20" id="JqR-xl-J4C"/>
-                            <constraint firstItem="0zH-ZT-Nqe" firstAttribute="trailing" secondItem="cvv-vu-TL8" secondAttribute="trailing" id="cEw-qO-SZ1"/>
-                            <constraint firstItem="0zH-ZT-Nqe" firstAttribute="trailing" secondItem="bN6-1y-hqf" secondAttribute="trailing" constant="20" id="eru-Ul-CUJ"/>
-                            <constraint firstItem="cvv-vu-TL8" firstAttribute="leading" secondItem="0zH-ZT-Nqe" secondAttribute="leading" id="nmC-FD-0fA"/>
-                            <constraint firstItem="bN6-1y-hqf" firstAttribute="leading" secondItem="0zH-ZT-Nqe" secondAttribute="leading" constant="20" id="ol1-9U-IIQ"/>
-                            <constraint firstItem="ilL-c2-beN" firstAttribute="centerY" secondItem="O6v-qA-jfV" secondAttribute="centerY" id="t25-Ln-it0"/>
-                            <constraint firstItem="0zH-ZT-Nqe" firstAttribute="bottom" secondItem="cvv-vu-TL8" secondAttribute="bottom" id="uBc-bK-PXa"/>
-                            <constraint firstItem="ilL-c2-beN" firstAttribute="centerX" secondItem="O6v-qA-jfV" secondAttribute="centerX" id="uXH-6J-bBd"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="0zH-ZT-Nqe"/>
-                    </view>
-                    <connections>
-                        <outlet property="loadingIndicator" destination="ilL-c2-beN" id="t9y-bF-tfb"/>
-                        <outlet property="playerNameLabel" destination="bN6-1y-hqf" id="GGS-BR-Nca"/>
-                        <outlet property="tableView" destination="cvv-vu-TL8" id="LJl-hh-lbB"/>
-                        <segue destination="dg3-Aq-cq2" kind="show" identifier="showStatDetailSegue" id="Seg-ST-943"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qPe-jk-vRJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2664.8000000000002" y="132.68365817091455"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="9ss-ZR-JCE">
@@ -308,10 +229,10 @@
             </objects>
             <point key="canvasLocation" x="292" y="133"/>
         </scene>
-        <!--Stat Detail View Controller-->
+        <!--Stat View Controller-->
         <scene sceneID="PC9-fC-YhW">
             <objects>
-                <viewController id="dg3-Aq-cq2" customClass="StatDetailViewController" customModule="BaseballGod" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="dg3-Aq-cq2" customClass="StatViewController" customModule="BaseballGod" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Uoq-0t-lXa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -325,15 +246,15 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mP6-xw-xYH">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mP6-xw-xYH">
                                 <rect key="frame" x="0.0" y="70" width="375" height="533"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="statDetailCell" rowHeight="35" id="4sd-PX-3yU" customClass="StatDetailCell" customModule="BaseballGod" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="statCell" rowHeight="35" id="4sd-PX-3yU" customClass="StatCell" customModule="BaseballGod" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="35"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4sd-PX-3yU" id="wMm-3W-wnQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="34.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="35"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stat Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZAS-vO-aDh">
@@ -371,6 +292,9 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="r35-dx-g6o">
+                                <rect key="frame" x="177.5" y="291.5" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -379,19 +303,22 @@
                             <constraint firstItem="ECv-Qr-CHs" firstAttribute="leading" secondItem="YhP-5c-drV" secondAttribute="leading" constant="20" id="Dmn-uO-uF4"/>
                             <constraint firstItem="mP6-xw-xYH" firstAttribute="leading" secondItem="YhP-5c-drV" secondAttribute="leading" id="Efq-2F-Ohe"/>
                             <constraint firstItem="YhP-5c-drV" firstAttribute="trailing" secondItem="ECv-Qr-CHs" secondAttribute="trailing" constant="20" id="LtZ-5X-868"/>
+                            <constraint firstItem="r35-dx-g6o" firstAttribute="centerY" secondItem="Uoq-0t-lXa" secondAttribute="centerY" id="MVQ-2i-6SW"/>
                             <constraint firstItem="YhP-5c-drV" firstAttribute="bottom" secondItem="mP6-xw-xYH" secondAttribute="bottom" id="UmY-kW-Y6V"/>
                             <constraint firstItem="mP6-xw-xYH" firstAttribute="top" secondItem="ECv-Qr-CHs" secondAttribute="bottom" constant="20" id="Yih-QU-MgF"/>
+                            <constraint firstItem="r35-dx-g6o" firstAttribute="centerX" secondItem="Uoq-0t-lXa" secondAttribute="centerX" id="qes-91-5fm"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="YhP-5c-drV"/>
                     </view>
                     <connections>
+                        <outlet property="loadingIndicator" destination="r35-dx-g6o" id="JuJ-VQ-S13"/>
                         <outlet property="playerNameLabel" destination="ECv-Qr-CHs" id="ON2-Yw-3kM"/>
                         <outlet property="tableView" destination="mP6-xw-xYH" id="KMI-LI-veZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9UM-WE-ifc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3465" y="133"/>
+            <point key="canvasLocation" x="2740" y="133"/>
         </scene>
     </scenes>
 </document>

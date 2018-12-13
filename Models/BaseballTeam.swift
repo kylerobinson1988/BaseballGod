@@ -13,6 +13,7 @@ struct BaseballTeam {
     
     var team: Team?
     var name: String? { get { return team?.displayName ?? "N/A" } }
+    var lookupName: String? { get { return team?.rawValue }}
     var colors: [UIColor] = []
     var image: UIImage? { get { return UIImage(named: team?.rawValue ?? "") } }
     

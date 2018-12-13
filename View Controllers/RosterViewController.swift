@@ -108,11 +108,14 @@ class RosterViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        guard let statVC = segue.destination as? StatOverviewViewController else { return }
+        guard let statVC = segue.destination as? StatViewController else { return }
+        guard let selectedPlayer = viewModel?.players[selectedIndex] else { return }
         
-        statVC.viewModel = StatOverviewViewModel()
-        statVC.viewModel?.selectedPlayer = self.viewModel?.players[selectedIndex]
-        statVC.viewModel?.selectedTeam = self.viewModel?.selectedTeam
+        statVC.viewModel = StatViewModel()
+        statVC.viewModel?.team = viewModel?.selectedTeam
+        statVC.viewModel?.player = selectedPlayer
+        statVC.viewModel?.textForTopLabel = "\(selectedPlayer.firstName ?? "") \(selectedPlayer.lastName ?? "")"
+        statVC.viewModel?.isPitcher = selectedPlayer.isPitcher
         
     }
 

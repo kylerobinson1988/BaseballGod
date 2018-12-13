@@ -235,7 +235,7 @@ class BaseballService {
         
     }
     
-    func getPlayerStats(player: BaseballPlayer, team: Team, season: Int, completion: (([PlayerStats]) -> ())?) {
+    func getPlayerStats(player: BaseballPlayer, team: Team, season: Int, completion: ((PlayerStats?) -> ())?) {
         
         if useStubData {
             
@@ -245,7 +245,7 @@ class BaseballService {
                 let jsonData = self.convertDataToJSON(data)
                 let stats = self.createPlayerStatsFromJSONData(isPitcher: player.isPitcher, jsonData)
                 
-                completion?(stats)
+                completion?(stats.last)
                 
             }
             
@@ -253,7 +253,7 @@ class BaseballService {
             
         }
         
-        let requestDetails = "player_season_stats?season_id=mlb-\(season)&team_id=\(team.rawValue)&player_id=\(player.lookupName ?? "")"
+        let requestDetails = "player_season_stats?per_page=220&season_id=mlb-\(season)&team_id=\(team.rawValue)&player_id=\(player.lookupName ?? "")"
         
         let webRequest = buildWebRequest(uri: requestDetails) { data, response, error in
             
@@ -271,11 +271,11 @@ class BaseballService {
                 print("Uh oh! No data.")
                 return
             }
-            
+    
             let jsonData = self.convertDataToJSON(data)
             let stats = self.createPlayerStatsFromJSONData(isPitcher: player.isPitcher, jsonData)
             
-            completion?(stats)
+            completion?(stats.last)
             
         }
         

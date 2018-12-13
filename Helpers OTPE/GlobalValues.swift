@@ -8,5 +8,5 @@
 
 import Foundation
 
-// STUB DATA: this determines if the app uses stub data. Is not used for unit test cases.
+// STUB DATA: this determines if the app uses stub data. This is not referenced for unit test cases.
 let useStubData = false
