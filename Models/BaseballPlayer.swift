@@ -24,10 +24,17 @@ struct BaseballPlayer {
     var weight: Int?
     var winsAboveReplacement: String?
     
-    
     var isPitcher: Bool {
         
-        get { return position == Position.pitcher ? true : false }
+        get {
+            
+            if position == .pitcher || position == .reliefPitcher || position == .startingPitcher {
+                return true
+            } else {
+                return false
+            }
+        
+        }
         
     }
     
