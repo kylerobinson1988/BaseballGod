@@ -99,17 +99,19 @@ class BaseballService {
         
         guard let players = json["players"] as? [[String:Any]] else { return [] }
         
-        let playerOutput: [BaseballPlayer] = players.map {
+        var playerOutput: [BaseballPlayer] = players.map {
             
             return BaseballPlayer(dict: $0)
             
         }
         
+        playerOutput = playerOutput.sorted()
+        
         return playerOutput
         
     }
 
-    func get40ManRoster(team: Team, season: Int, rosterCompletion: (([BaseballPlayer]) -> ())?) {
+    func getRoster(team: Team, season: Int, rosterCompletion: (([BaseballPlayer]) -> ())?) {
         
         if useStubData {
             
@@ -126,7 +128,7 @@ class BaseballService {
             
         }
         
-        let requestDetails = "rosters?per_page=20&page=1&team_id=\(team.rawValue)&season_id=mlb-\(season)"
+        let requestDetails = "rosters?per_page=100&page=1&team_id=\(team.rawValue)&season_id=mlb-\(season)"
         
         let webRequest = buildWebRequest(uri: requestDetails) { data, response, error in
             

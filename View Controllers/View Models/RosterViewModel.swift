@@ -14,6 +14,8 @@ class RosterViewModel {
     
     var players: [BaseballPlayer] = []
     
+    var year: Int = 2018
+
     init() {
         
     }
@@ -22,7 +24,7 @@ class RosterViewModel {
         
         guard selectedTeam.team != nil else { return }
         
-        BaseballService.shared.get40ManRoster(team: selectedTeam.team!, season: 2018, rosterCompletion: { players in
+        BaseballService.shared.get40ManRoster(team: selectedTeam.team!, season: year, rosterCompletion: { players in
             
             self.players = players
             completion?()

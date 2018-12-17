@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct BaseballPlayer {
+struct BaseballPlayer: Comparable {
     
     var firstName: String?
     var lastName: String?
@@ -52,6 +52,14 @@ struct BaseballPlayer {
         birthday = dict["birth_date"] as? String
         winsAboveReplacement = dict["war"] as? String
         
+    }
+    
+    static func <(lhs: BaseballPlayer, rhs: BaseballPlayer) -> Bool {
+        return lhs.lastName?.localizedCaseInsensitiveCompare(rhs.lastName ?? "") == .orderedAscending
+    }
+
+    static func ==(lhs: BaseballPlayer, rhs: BaseballPlayer) -> Bool {
+        return lhs.lastName == rhs.lastName
     }
     
 }

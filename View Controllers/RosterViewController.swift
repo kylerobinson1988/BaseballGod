@@ -21,7 +21,7 @@ class RosterViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        teamNameLabel.text = viewModel?.selectedTeam.name ?? "Team Name"
+        getTeamNameLabel()
         
         if let colors = viewModel?.selectedTeam.colors, colors.count > 1 {
             teamNameLabel.textColor = colors[1]
@@ -38,6 +38,12 @@ class RosterViewController: UIViewController, UITableViewDataSource, UITableView
             }
             
         })
+        
+    }
+    
+    func getTeamNameLabel() {
+        
+        teamNameLabel.text = "\(viewModel?.year ?? 2018) \(viewModel?.selectedTeam.name ?? "Team Name")"
         
     }
 
@@ -104,18 +110,46 @@ class RosterViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
     
+    // MARK: - Actions
+    
+    @IBAction func pickYearPressed(_ sender: Any) {
+        
+    }
+    
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        guard let statVC = segue.destination as? StatViewController else { return }
-        guard let selectedPlayer = viewModel?.players[selectedIndex] else { return }
-        
-        statVC.viewModel = StatViewModel()
-        statVC.viewModel?.team = viewModel?.selectedTeam
-        statVC.viewModel?.player = selectedPlayer
-        statVC.viewModel?.textForTopLabel = "\(selectedPlayer.firstName ?? "") \(selectedPlayer.lastName ?? "")"
-        statVC.viewModel?.isPitcher = selectedPlayer.isPitcher
+        if segue.identifier == "showStatsSegue" {
+            
+            guard let statVC = segue.destination as? StatViewController else { return }
+            guard let selectedPlayer = viewModel?.players[selectedIndex] else { return }
+            
+            statVC.viewModel = StatViewModel()
+            statVC.viewModel?.team = viewModel?.selectedTeam
+            statVC.viewModel?.player = selectedPlayer
+            statVC.viewModel?.textForTopLabel = "\(selectedPlayer.firstName ?? "") \(selectedPlayer.lastName ?? "")"
+            statVC.viewModel?.isPitcher = selectedPlayer.isPitcher
+            
+        } else {
+            
+            guard let yearVC = segue.destination as? YearViewController else { return }
+            
+            yearVC.yearCompletion = { [weak self] year in
+                
+                self?.viewModel?.year = year
+                self?.viewModel?.getPlayers(completion: {
+                    
+                    DispatchQueue.main.async {
+                        self?.getTeamNameLabel()
+                        self?.reloadTableView()
+                    }
+                    
+                })
+                
+            }
+            
+        }
         
     }
 
