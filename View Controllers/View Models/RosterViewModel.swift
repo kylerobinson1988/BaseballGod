@@ -16,17 +16,27 @@ class RosterViewModel {
     
     var year: Int = 2018
 
+    var page = 1
+    
+    var hasHitLastPage: Bool = false
+    
     init() {
         
     }
     
     func getPlayers(completion: (()->())?) {
         
-        guard selectedTeam.team != nil else { return }
+        guard selectedTeam.team != nil && !hasHitLastPage else { return }
         
-        BaseballService.shared.get40ManRoster(team: selectedTeam.team!, season: year, rosterCompletion: { players in
+        BaseballService.shared.getRoster(team: selectedTeam.team!, season: year, page: page, rosterCompletion: { [weak self] players in
             
-            self.players = players
+            guard !players.isEmpty else {
+                self?.hasHitLastPage = true
+                return
+            }
+            
+            self?.players += players
+            self?.page += 1
             completion?()
             
         })

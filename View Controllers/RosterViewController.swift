@@ -31,6 +31,12 @@ class RosterViewController: UIViewController, UITableViewDataSource, UITableView
         
         loadingIndicator.startAnimating()
         
+        getPlayersFromModel()
+        
+    }
+    
+    func getPlayersFromModel() {
+        
         viewModel?.getPlayers(completion: {
             
             DispatchQueue.main.async {
@@ -91,6 +97,20 @@ class RosterViewController: UIViewController, UITableViewDataSource, UITableView
         selectedIndex = indexPath.row
         
         performSegue(withIdentifier: "showStatsSegue", sender: self)
+        
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        let scrollViewHeight = scrollView.frame.size.height
+        let scrollContentSizeHeight = scrollView.contentSize.height
+        let scrollOffset = scrollView.contentOffset.y
+        
+        if scrollOffset + scrollViewHeight == scrollContentSizeHeight {
+            
+            getPlayersFromModel()
+            
+        }
         
     }
     

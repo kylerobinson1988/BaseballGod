@@ -111,7 +111,7 @@ class BaseballService {
         
     }
 
-    func getRoster(team: Team, season: Int, rosterCompletion: (([BaseballPlayer]) -> ())?) {
+    func getRoster(team: Team, season: Int, page: Int, rosterCompletion: (([BaseballPlayer]) -> ())?) {
         
         if useStubData {
             
@@ -128,7 +128,7 @@ class BaseballService {
             
         }
         
-        let requestDetails = "rosters?per_page=100&page=1&team_id=\(team.rawValue)&season_id=mlb-\(season)"
+        let requestDetails = "rosters?per_page=20&page=\(page)&team_id=\(team.rawValue)&season_id=mlb-\(season)"
         
         let webRequest = buildWebRequest(uri: requestDetails) { data, response, error in
             
