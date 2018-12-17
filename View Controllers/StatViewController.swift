@@ -112,7 +112,13 @@ class StatCell: UITableViewCell {
     func configureCell(name: String, value: String, color: UIColor?) {
         
         statNameLabel.text = name
-        statValueLabel.text = value
+        
+        if value == "\(notAvailable)" || value == "\(Double(notAvailable))" {
+            statValueLabel.text = "N/A"
+        } else {
+            statValueLabel.text = value
+        }
+
         statValueLabel.textColor = color != nil ? color : UIColor.black
         
     }

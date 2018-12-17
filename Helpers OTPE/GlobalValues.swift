@@ -10,3 +10,5 @@ import Foundation
 
 // STUB DATA: this determines if the app uses stub data. This is not referenced for unit test cases.
 let useStubData = false
+// This value is used to create a N/A value for integers or doubles where the value is nil.
+let notAvailable = 91919

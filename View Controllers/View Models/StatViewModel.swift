@@ -17,9 +17,7 @@ class StatViewModel {
     var stats: PlayerStats!
     
     var statsToDisplay: [[String]] = []
-    
-//    private let notAvailable = 91919
-    
+        
     init() {
         
         // Init service
@@ -56,21 +54,21 @@ class StatViewModel {
         
         statsToDisplay = [
             
-            ["ERA", "\(stats?.era)"],
-            ["Innings Pitched", "\(stats?.inningsPitched)"],
-            ["Games Started", "\(stats?.gamesStarted)"],
-            ["Games Pitched", "\(stats?.gamesPitched)"],
-            ["Quality Starts", "\(stats?.qualityStarts)"],
-            ["Wins", "\(stats?.wins)"],
-            ["Losses", "\(stats?.losses)"],
-            ["Saves", "\(stats?.saves)"],
-            ["Shutouts", "\(stats?.shutouts)"],
-            ["Batters Faced", "\(stats?.battersFaced)"],
-            ["Walks Allowed", "\(stats?.walksAllowed)"],
-            ["Strikeouts", "\(stats?.strikeoutsAllowed)"],
-            ["Home Runs", "\(stats?.homeRunsAllowed)"],
-            ["Balls", "\(stats?.ballsThrown)"],
-            ["Strikes", "\(stats?.strikesThrown)"]
+            ["ERA", "\(stats?.era ?? Double(notAvailable))"],
+            ["Innings Pitched", "\(stats?.inningsPitched ?? Double(notAvailable))"],
+            ["Games Started", "\(stats?.gamesStarted ?? notAvailable)"],
+            ["Games Pitched", "\(stats?.gamesPitched ?? notAvailable)"],
+            ["Quality Starts", "\(stats?.qualityStarts ?? notAvailable)"],
+            ["Wins", "\(stats?.wins ?? notAvailable)"],
+            ["Losses", "\(stats?.losses ?? notAvailable)"],
+            ["Saves", "\(stats?.saves ?? notAvailable)"],
+            ["Shutouts", "\(stats?.shutouts ?? notAvailable)"],
+            ["Batters Faced", "\(stats?.battersFaced ?? notAvailable)"],
+            ["Walks Allowed", "\(stats?.walksAllowed ?? notAvailable)"],
+            ["Strikeouts", "\(stats?.strikeoutsAllowed ?? notAvailable)"],
+            ["Home Runs", "\(stats?.homeRunsAllowed ?? notAvailable)"],
+            ["Balls", "\(stats?.ballsThrown ?? notAvailable)"],
+            ["Strikes", "\(stats?.strikesThrown ?? notAvailable)"]
             
         ]
         
@@ -80,19 +78,19 @@ class StatViewModel {
         
         statsToDisplay = [
         
-            ["At Bats", "\(stats?.atBats)"],
-            ["Batting Average", "\(stats?.battingAverage)"],
-            ["Walks", "\(stats?.walks)"],
-            ["Singles", "\(stats?.singles)"],
-            ["Double", "\(stats?.doubles)"],
-            ["Triples", "\(stats?.triples)"],
-            ["Home Runs", "\(stats?.homeRuns)"],
-            ["Stolen Bases", "\(stats?.stolenBases)"],
-            ["Strikeouts", "\(stats?.strikeouts)"],
-            ["Double Plays", "\(stats?.gidp)"],
-            ["RBI", "\(stats?.rbi)"],
-            ["Slugging %", "\(stats?.slugging)"],
-            ["Games Fielded", "\(stats?.gamesFielded)"],
+            ["At Bats", "\(stats?.atBats ?? notAvailable)"],
+            ["Batting Average", "\(stats?.battingAverage ?? Double(notAvailable))"],
+            ["Walks", "\(stats?.walks ?? notAvailable)"],
+            ["Singles", "\(stats?.singles ?? notAvailable)"],
+            ["Double", "\(stats?.doubles ?? notAvailable)"],
+            ["Triples", "\(stats?.triples ?? notAvailable)"],
+            ["Home Runs", "\(stats?.homeRuns ?? notAvailable)"],
+            ["Stolen Bases", "\(stats?.stolenBases ?? notAvailable)"],
+            ["Strikeouts", "\(stats?.strikeouts ?? notAvailable)"],
+            ["Double Plays", "\(stats?.gidp ?? notAvailable)"],
+            ["RBI", "\(stats?.rbi ?? notAvailable)"],
+            ["Slugging %", "\(stats?.slugging ?? Double(notAvailable))"],
+            ["Games Fielded", "\(stats?.gamesFielded ?? notAvailable)"],
             
         ]
         
