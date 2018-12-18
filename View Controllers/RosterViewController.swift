@@ -158,6 +158,7 @@ class RosterViewController: UIViewController, UITableViewDataSource, UITableView
             yearVC.yearCompletion = { [weak self] year in
                 
                 self?.viewModel?.year = year
+
                 self?.viewModel?.getPlayers(completion: {
                     
                     DispatchQueue.main.async {
