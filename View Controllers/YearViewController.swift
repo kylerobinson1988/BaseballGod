@@ -59,7 +59,7 @@ class YearViewController: UIViewController, UITableViewDataSource, UITableViewDe
      
         let year = viewModel?.years[indexPath.row]
         
-        yearCompletion(year ?? 2018)
+        yearCompletion(year ?? 2019)
         
         self.navigationController?.popViewController(animated: true)
         
@@ -74,7 +74,7 @@ class YearCell: UITableViewCell {
     var year: Int? {
         
         didSet {
-            yearLabel.text = "\(year ?? 2018)"
+            yearLabel.text = "\(year ?? 2019)"
         }
         
     }

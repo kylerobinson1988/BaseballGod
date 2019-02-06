@@ -49,7 +49,7 @@ class RosterViewController: UIViewController, UITableViewDataSource, UITableView
     
     func getTeamNameLabel() {
         
-        teamNameLabel.text = "\(viewModel?.year ?? 2018) \(viewModel?.selectedTeam.name ?? "Team Name")"
+        teamNameLabel.text = "\(viewModel?.year ?? 2019) \(viewModel?.selectedTeam.name ?? "Team Name")"
         
     }
 

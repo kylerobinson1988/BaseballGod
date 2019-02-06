@@ -285,6 +285,55 @@ class BaseballService {
         
     }
     
+    func searchForPlayer(playerName: String, isPitcher: Bool, season: Int, completion: ((PlayerStats?, NSError?) -> ())?) {
+        
+        let name = playerName.formatForSearch()
+        
+        let requestDetails = "player_season_stats?per_page=220&season_id=mlb-\(season)&player_id=mlb-\(name)"
+        
+        let webRequest = buildWebRequest(uri: requestDetails) { data, response, error in
+            
+            guard error == nil else {
+                
+                completion?(nil, self.createError(description: "There was an error with the request"))
+                return
+                
+            }
+            
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 200 else {
+                
+                completion?(nil, self.createError(description: "Something went wrong. Status code not 200."))
+                return
+                
+            }
+            
+            guard data != nil else {
+                
+                completion?(nil, self.createError(description: "Uh oh! No data."))
+                return
+                
+            }
+            
+            let jsonData = self.convertDataToJSON(data)
+            let stats = self.createPlayerStatsFromJSONData(isPitcher: isPitcher, jsonData)
+            
+            completion?(stats.last, nil)
+            
+        }
+        
+        webRequest?.resume()
+        
+    }
+    
+    // MARK: - Helper Methods
+    
+    private func createError(description: String) -> NSError {
+        
+        let error = NSError(domain: "", code: 1, userInfo: ["message":description])
+        
+        return error
+        
+    }
     
 }
 

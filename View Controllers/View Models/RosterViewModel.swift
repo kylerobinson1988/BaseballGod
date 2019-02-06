@@ -14,7 +14,7 @@ class RosterViewModel {
     
     var players: [BaseballPlayer] = []
     
-    var year: Int = 2018 {
+    var year: Int = 2019 {
         
         didSet {
             
