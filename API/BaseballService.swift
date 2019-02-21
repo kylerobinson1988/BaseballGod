@@ -160,7 +160,7 @@ class BaseballService {
     
     // MARK - Get all teams.
     
-    private func createBaseballTeamsFromJSONData(_ json: [String: Any]) -> [BaseballTeam] {
+    private func createBaseballTeamsFromJSONData(_ json: [String:Any]) -> [BaseballTeam] {
         
         guard let teams = json["teams"] as? [[String:Any]] else { return [] }
         
@@ -245,9 +245,9 @@ class BaseballService {
             getDataFromStubFile(fileName: "stattleshipPitcherStats") { data, response, error in
                 
                 let jsonData = self.convertDataToJSON(data)
-                let stats = self.createPlayerStatsFromJSONData(isPitcher: player.isPitcher, jsonData)
+                let jsonStats = self.createPlayerStatsFromJSONData(isPitcher: player.isPitcher, jsonData)
                 
-                completion?(stats.last)
+                completion?(jsonStats.first)
                 
             }
             
@@ -255,7 +255,7 @@ class BaseballService {
             
         }
         
-        let requestDetails = "player_season_stats?per_page=220&season_id=mlb-\(season)&team_id=\(team.rawValue)&player_id=\(player.lookupName ?? "")"
+        let requestDetails = "player_season_stats?per_page=20&season_id=mlb-\(season)&team_id=\(team.rawValue)&player_id=\(player.lookupName ?? "")"
         
         let webRequest = buildWebRequest(uri: requestDetails) { data, response, error in
             
@@ -275,9 +275,9 @@ class BaseballService {
             }
     
             let jsonData = self.convertDataToJSON(data)
-            let stats = self.createPlayerStatsFromJSONData(isPitcher: player.isPitcher, jsonData)
+            let jsonStats = self.createPlayerStatsFromJSONData(isPitcher: player.isPitcher, jsonData)
             
-            completion?(stats.last)
+            completion?(jsonStats.first)
             
         }
         
@@ -285,39 +285,42 @@ class BaseballService {
         
     }
     
-    func searchForPlayer(playerName: String, isPitcher: Bool, season: Int, completion: ((PlayerStats?, NSError?) -> ())?) {
+    // There's currently not a good way to search for players - just player stats. Revisit this later.
+    
+    func getPlayerStatsFromSearch(playerName: String, isPitcher: Bool, season: Int, completion: (([BaseballTeam], PlayerStats?, NSError?) -> ())?) {
         
-        let name = playerName.formatForSearch()
+        let name = "mlb-\(playerName.formatForSearch())"
         
-        let requestDetails = "player_season_stats?per_page=220&season_id=mlb-\(season)&player_id=mlb-\(name)"
+        let requestDetails = "player_season_stats?per_page=20&season_id=mlb-\(season)&player_id=\(name)"
         
         let webRequest = buildWebRequest(uri: requestDetails) { data, response, error in
             
             guard error == nil else {
                 
-                completion?(nil, self.createError(description: "There was an error with the request"))
+                completion?([], nil, self.createError(description: "There was an error with the request"))
                 return
                 
             }
             
             guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode == 200 else {
                 
-                completion?(nil, self.createError(description: "Something went wrong. Status code not 200."))
+                completion?([], nil, self.createError(description: "Something went wrong. Status code not 200."))
                 return
                 
             }
             
             guard data != nil else {
                 
-                completion?(nil, self.createError(description: "Uh oh! No data."))
+                completion?([], nil, self.createError(description: "Uh oh! No data."))
                 return
                 
             }
             
             let jsonData = self.convertDataToJSON(data)
-            let stats = self.createPlayerStatsFromJSONData(isPitcher: isPitcher, jsonData)
+            let jsonTeam = self.createBaseballTeamsFromJSONData(jsonData)
+            let jsonStats = self.createPlayerStatsFromJSONData(isPitcher: isPitcher, jsonData)
             
-            completion?(stats.last, nil)
+            completion?(jsonTeam, jsonStats.first, nil)
             
         }
         

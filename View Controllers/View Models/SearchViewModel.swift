@@ -24,7 +24,7 @@ class SearchViewModel {
     
     func performSearch(completion: @escaping ((Bool) -> ())) {
         
-        BaseballService.shared.searchForPlayer(playerName: formattedPlayerName, isPitcher: isPitcher, season: season) { playerStats, error in
+        BaseballService.shared.getPlayerStatsFromSearch(playerName: formattedPlayerName, isPitcher: isPitcher, season: season) { teams, playerStats, error in
             
             guard error == nil, playerStats != nil else {
                 completion(false)

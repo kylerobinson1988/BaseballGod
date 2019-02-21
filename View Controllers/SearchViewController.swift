@@ -14,6 +14,10 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     @IBOutlet weak var playerTypeSegmentControl: UISegmentedControl!
     @IBOutlet weak var searchResultTableView: UITableView!
     
+    @IBOutlet weak var noResultsLabel: UILabel!
+    @IBOutlet weak var suggestionLabel: UILabel!
+    @IBOutlet weak var yearLabel: UILabel!
+    
     var viewModel: SearchViewModel?
     
     var playerIndex = 0
@@ -25,11 +29,15 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         
         tableViewSetup()
         
+        showHideNoResultsUI(show: false)
+        
     }
     
     func showHideNoResultsUI(show: Bool) {
         
-        
+        searchResultTableView.isHidden = show ? true : false
+        noResultsLabel.isHidden = show ? false : true
+        suggestionLabel.isHidden = show ? false : true
         
     }
     
@@ -61,7 +69,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
 //            cell.color = colorForLabel[0]
 //        }
         
-        cell.player = viewModel?.searchResults[indexPath.row]
+//        cell.player = viewModel?.searchResults[indexPath.row]
         
         return cell
         
@@ -94,9 +102,28 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         
     }
     
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    // MARK: - Year Selection
+
+    func yearUpdated(year: Int) {
         
+        viewModel?.season = year
         
+        yearLabel.text = "\(year)"
+        
+        if searchBar.text?.isEmpty == false {
+            
+            viewModel?.performSearch(completion: { success in
+                
+                if success {
+                    self.showHideNoResultsUI(show: false)
+                    self.searchResultTableView.reloadData()
+                } else {
+                    self.showHideNoResultsUI(show: true)
+                }
+                
+            })
+            
+        }
         
     }
     
@@ -106,12 +133,20 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         
         if segue.identifier == "showSearchResultDetailSegue" {
             
-            guard let destination = segue.destination as? StatViewController else { return }
+            guard let statVC = segue.destination as? StatViewController else { return }
             
-            destination.viewModel?.player = viewModel?.searchResults[playerIndex]
+            statVC.viewModel?.stats = viewModel?.searchResults[playerIndex]
+            
+        } else if segue.identifier == "showYearPickerSegue" {
+            
+            guard let yearVC = segue.destination as? YearViewController else { return }
+            
+            yearVC.yearCompletion = { year in self.yearUpdated(year: year) }
             
         }
         
     }
 
 }
+
+
