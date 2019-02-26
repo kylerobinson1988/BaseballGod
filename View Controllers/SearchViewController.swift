@@ -11,7 +11,6 @@ import UIKit
 class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var playerTypeSegmentControl: UISegmentedControl!
     @IBOutlet weak var searchResultTableView: UITableView!
     
     @IBOutlet weak var noResultsLabel: UILabel!
@@ -35,9 +34,13 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     
     func showHideNoResultsUI(show: Bool) {
         
-        searchResultTableView.isHidden = show ? true : false
-        noResultsLabel.isHidden = show ? false : true
-        suggestionLabel.isHidden = show ? false : true
+        DispatchQueue.main.async {
+            
+            self.searchResultTableView.isHidden = show ? true : false
+            self.noResultsLabel.isHidden = show ? false : true
+            self.suggestionLabel.isHidden = show ? false : true
+            
+        }
         
     }
     
@@ -79,8 +82,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         
         playerIndex = indexPath.row
         
-        performSegue(withIdentifier: "showSearchResultDetailSegue", sender: nil)
-        
     }
     
     // MARK: - Search Bar
@@ -93,12 +94,22 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             
             if success {
                 self.showHideNoResultsUI(show: false)
-                self.searchResultTableView.reloadData()
+                self.reloadTableAsync()
             } else {
                 self.showHideNoResultsUI(show: true)
             }
             
         })
+        
+    }
+    
+    func reloadTableAsync() {
+        
+        DispatchQueue.main.async {
+            
+            self.searchResultTableView.reloadData()
+            
+        }
         
     }
     
@@ -131,11 +142,14 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if segue.identifier == "showSearchResultDetailSegue" {
+        if segue.identifier == "showSearchDetailSegue" {
             
-            guard let statVC = segue.destination as? StatViewController else { return }
+            guard let searchDetailVC = segue.destination as? SearchDetailViewController else { return }
             
-            statVC.viewModel?.stats = viewModel?.searchResults[playerIndex]
+            searchDetailVC.viewModel = SearchDetailViewModel()
+            searchDetailVC.viewModel?.textForTopLabel = viewModel?.searchBarInput ?? ""
+            searchDetailVC.viewModel?.team = viewModel?.teams.last
+            searchDetailVC.viewModel?.stats = viewModel?.searchResults[playerIndex]
             
         } else if segue.identifier == "showYearPickerSegue" {
             
@@ -146,7 +160,13 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         }
         
     }
-
+    
+    @IBAction func backButtonPressed(_ sender: Any) {
+        
+        dismiss(animated: true, completion: nil)
+        
+    }
+    
 }
 
 

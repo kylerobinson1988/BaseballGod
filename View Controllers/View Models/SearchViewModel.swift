@@ -17,21 +17,23 @@ class SearchViewModel {
     }
     
     private var formattedPlayerName: String = ""
-    var isPitcher: Bool = true
     var season: Int = 2018
     
+    var teams: [BaseballTeam] = []
     var searchResults: [PlayerStats] = []
     
     func performSearch(completion: @escaping ((Bool) -> ())) {
         
-        BaseballService.shared.getPlayerStatsFromSearch(playerName: formattedPlayerName, isPitcher: isPitcher, season: season) { teams, playerStats, error in
+        BaseballService.shared.getPlayerStatsFromSearch(playerName: formattedPlayerName, season: season) { teams, playerStats, error in
             
             guard error == nil, playerStats != nil else {
                 completion(false)
                 return
             }
             
+            self.teams = teams
             self.searchResults = [playerStats!]
+            
             
             completion(true)
             

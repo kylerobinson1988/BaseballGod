@@ -11,7 +11,7 @@ import  UIKit
 
 struct PlayerStats {
     
-    var isPitcher: Bool
+    var isPitcher: Bool? = false
     var dateOfStats: String?
 
     // Pitcher stats
@@ -60,8 +60,16 @@ struct PlayerStats {
         isPitcher ? parseForPitcher(dict: infoDict) : parseForHitter(dict: infoDict)
 
     }
+   
+    init(infoDict: [String:Any]) {
+        
+        rawDataDict = infoDict
+        
+        parseForAllStats(dict: infoDict)
+                
+    }
     
-    private mutating func parseForPitcher(dict: [String:Any]) {
+    private mutating func parseForPitcher(dict: [String: Any]) {
         
         dateOfStats = dict["statistics_on"] as? String
         wildPitches = dict["wild_pitches"] as? Int
@@ -83,7 +91,7 @@ struct PlayerStats {
         
     }
     
-    private mutating func parseForHitter(dict: [String:Any]) {
+    private mutating func parseForHitter(dict: [String: Any]) {
 
         dateOfStats = dict["statistics_on"] as? String
         atBats = dict["at_bats"] as? Int
@@ -100,6 +108,42 @@ struct PlayerStats {
         slugging = dict["slugging_pct"] as? Double
         gamesFielded = dict["fielder_games_played"] as? Int
         
+    }
+    
+    private mutating func parseForAllStats(dict: [String: Any]) {
+        
+        dateOfStats = dict["statistics_on"] as? String
+        wildPitches = dict["wild_pitches"] as? Int
+        era = dict["era"] as? Double
+        inningsPitched = dict["innings_pitched"] as? Double
+        gamesStarted = dict["games_started"] as? Int
+        gamesPitched = dict["games_pitched"] as? Int
+        qualityStarts = dict["quality_starts"] as? Int
+        wins = dict["wins"] as? Int
+        losses = dict["losses"] as? Int
+        saves = dict["saves"] as? Int
+        shutouts = dict["shutouts"] as? Int
+        battersFaced = dict["batters_faced"] as? Int
+        walksAllowed = dict["walks_allowed"] as? Int
+        strikeoutsAllowed = dict["strikeouts_allowed"] as? Int
+        homeRunsAllowed = dict["home_runs_allowed"] as? Int
+        ballsThrown = dict["balls_thrown"] as? Int
+        strikesThrown = dict["strikes_thrown"] as? Int
+        
+        dateOfStats = dict["statistics_on"] as? String
+        atBats = dict["at_bats"] as? Int
+        battingAverage = dict["batting_average"] as? Double
+        walks = dict["walks"] as? Int
+        singles = dict["singles"] as? Int
+        doubles = dict["doubles"] as? Int
+        triples = dict["triples"] as? Int
+        homeRuns = dict["home_runs"] as? Int
+        stolenBases = dict["stolen_bases"] as? Int
+        strikeouts = dict["strikeouts"] as? Int
+        gidp = dict["ground_outs_into_double_plays"] as? Int
+        rbi = dict["rbi"] as? Int
+        slugging = dict["slugging_pct"] as? Double
+        gamesFielded = dict["fielder_games_played"] as? Int
     }
     
 }

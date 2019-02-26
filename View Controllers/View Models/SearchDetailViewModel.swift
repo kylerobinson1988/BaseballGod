@@ -1,50 +1,24 @@
 //
-//  StatViewModel.swift
+//  SearchDetailViewModel.swift
 //  BaseballGod
 //
-//  Created by Kyle Brooks Robinson on 12/11/18.
-//  Copyright © 2018 Rocktransformed. All rights reserved.
+//  Created by Kyle Brooks Robinson on 2/22/19.
+//  Copyright © 2019 Rocktransformed. All rights reserved.
 //
 
 import Foundation
 
-class StatViewModel {
+class SearchDetailViewModel {
     
-    var team: BaseballTeam!
+    var team: BaseballTeam?
     var player: BaseballPlayer!
     var textForTopLabel: String = ""
     var isPitcher: Bool = false
-    var stats: PlayerStats!
+    var stats: PlayerStats?
     
     var statsToDisplay: [[String]] = []
     
-    func getStats(completion: (()->())?) {
-        
-        guard team?.team != nil, player != nil else { return }
-        
-        BaseballService.shared.getPlayerStats(player: player, team: team.team!, season: 2018) { stats in
-            
-            self.stats = stats
-            
-            if self.isPitcher {
-                self.getPitcherStatsForDisplay()
-            } else {
-                self.getHitterStatsForDisplay()
-            }
-            
-            completion?()
-            
-        }
-        
-    }
-    
-    func showStatsFromSearch() {
-        
-        getPitcherStatsForDisplay()
-        
-    }
-    
-    private func getPitcherStatsForDisplay() {
+    func getStatsForDisplay() {
         
         statsToDisplay = [
             
@@ -62,16 +36,7 @@ class StatViewModel {
             ["Strikeouts", "\(stats?.strikeoutsAllowed ?? notAvailable)"],
             ["Home Runs", "\(stats?.homeRunsAllowed ?? notAvailable)"],
             ["Balls", "\(stats?.ballsThrown ?? notAvailable)"],
-            ["Strikes", "\(stats?.strikesThrown ?? notAvailable)"]
-            
-        ]
-        
-    }
-    
-    private func getHitterStatsForDisplay() {
-        
-        statsToDisplay = [
-        
+            ["Strikes", "\(stats?.strikesThrown ?? notAvailable)"],
             ["At Bats", "\(stats?.atBats ?? notAvailable)"],
             ["Batting Average", "\(stats?.battingAverage ?? Double(notAvailable))"],
             ["Walks", "\(stats?.walks ?? notAvailable)"],
@@ -91,10 +56,6 @@ class StatViewModel {
     }
     
 }
-
-
-
-
 
 
 

@@ -237,6 +237,20 @@ class BaseballService {
         
     }
     
+    private func createPlayerStatsFromJSONDataForSearch(_ json: [String: Any]) -> [PlayerStats] {
+        
+        guard let stats = json["player_season_stats"] as? [[String:Any]] else { return [] }
+        
+        let statCollection: [PlayerStats] = stats.map {
+            
+            return PlayerStats(infoDict: $0)
+            
+        }
+        
+        return statCollection
+        
+    }
+    
     func getPlayerStats(player: BaseballPlayer, team: Team, season: Int, completion: ((PlayerStats?) -> ())?) {
         
         if useStubData {
@@ -287,7 +301,7 @@ class BaseballService {
     
     // There's currently not a good way to search for players - just player stats. Revisit this later.
     
-    func getPlayerStatsFromSearch(playerName: String, isPitcher: Bool, season: Int, completion: (([BaseballTeam], PlayerStats?, NSError?) -> ())?) {
+    func getPlayerStatsFromSearch(playerName: String, season: Int, completion: (([BaseballTeam], PlayerStats?, NSError?) -> ())?) {
         
         let name = "mlb-\(playerName.formatForSearch())"
         
@@ -318,7 +332,7 @@ class BaseballService {
             
             let jsonData = self.convertDataToJSON(data)
             let jsonTeam = self.createBaseballTeamsFromJSONData(jsonData)
-            let jsonStats = self.createPlayerStatsFromJSONData(isPitcher: isPitcher, jsonData)
+            let jsonStats = self.createPlayerStatsFromJSONDataForSearch(jsonData)
             
             completion?(jsonTeam, jsonStats.first, nil)
             
