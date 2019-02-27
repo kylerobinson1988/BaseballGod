@@ -27,9 +27,7 @@ struct BaseballTeam {
     private func createColorsForTeam(_ colors: [String]) -> [UIColor] {
         
         let output: [UIColor] = colors.map {
-            
-            return UIColor.fromRGB(colorCode: $0)
-            
+            return UIColor.fromRGB(colorCode: $0)            
         }
         
         return output

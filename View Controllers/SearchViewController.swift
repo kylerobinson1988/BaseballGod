@@ -68,12 +68,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         
         cell.playerNameLabel.text = viewModel?.searchBarInput
         
-//        if let colorForLabel = viewModel?.selectedTeam.colors, colorForLabel.count > 0 {
-//            cell.color = colorForLabel[0]
-//        }
-        
-//        cell.player = viewModel?.searchResults[indexPath.row]
-        
         return cell
         
     }
@@ -105,11 +99,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     
     func reloadTableAsync() {
         
-        DispatchQueue.main.async {
-            
-            self.searchResultTableView.reloadData()
-            
-        }
+        DispatchQueue.main.async { self.searchResultTableView.reloadData() }
         
     }
     

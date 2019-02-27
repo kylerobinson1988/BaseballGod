@@ -71,12 +71,6 @@ class YearCell: UITableViewCell {
     
     @IBOutlet weak var yearLabel: UILabel!
     
-    var year: Int? {
-        
-        didSet {
-            yearLabel.text = "\(year ?? 2019)"
-        }
-        
-    }
+    var year: Int? { didSet { yearLabel.text = "\(year ?? 2019)" } }
     
 }

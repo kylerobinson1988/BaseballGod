@@ -110,6 +110,8 @@ struct PlayerStats {
         
     }
     
+    // This is used when creating player stats for a search, where we don't have a good way to tell if the player is a pitcher or not. Can work on this more later.
+    
     private mutating func parseForAllStats(dict: [String: Any]) {
         
         dateOfStats = dict["statistics_on"] as? String
@@ -144,6 +146,7 @@ struct PlayerStats {
         rbi = dict["rbi"] as? Int
         slugging = dict["slugging_pct"] as? Double
         gamesFielded = dict["fielder_games_played"] as? Int
+        
     }
     
 }

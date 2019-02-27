@@ -24,6 +24,12 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         loadingIndicator.startAnimating()
         
+        viewModelSetup()
+
+    }
+    
+    func viewModelSetup() {
+        
         viewModel = HomeViewModel()
         
         viewModel?.getTeams(completion: {
@@ -33,7 +39,7 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
             
         })
-
+        
     }
     
     // MARK: - Table View Methods

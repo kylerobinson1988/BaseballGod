@@ -40,7 +40,7 @@ class SearchDetailViewController: UIViewController, UITableViewDataSource, UITab
         tableView.dataSource = self
         tableView.delegate = self
         tableView.tableFooterView = UIView(frame: CGRect.zero)
-        reloadTableView()
+        tableView.reloadData()
         
     }
     
@@ -63,11 +63,5 @@ class SearchDetailViewController: UIViewController, UITableViewDataSource, UITab
         return cell
         
     }
-    
-    func reloadTableView() {
-        
-        self.tableView.reloadData()
-        
-    }
-    
+
 }

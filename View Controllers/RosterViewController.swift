@@ -23,15 +23,21 @@ class RosterViewController: UIViewController, UITableViewDataSource, UITableView
         
         getTeamNameLabel()
         
-        if let colors = viewModel?.selectedTeam.colors, colors.count > 1 {
-            teamNameLabel.textColor = colors[1]
-        }
+        setUpColors()
         
         tableViewSetup()
         
         loadingIndicator.startAnimating()
         
         getPlayersFromModel()
+        
+    }
+    
+    func setUpColors() {
+        
+        if let colors = viewModel?.selectedTeam.colors, colors.count > 1 {
+            teamNameLabel.textColor = colors[1]
+        }
         
     }
     
@@ -107,9 +113,7 @@ class RosterViewController: UIViewController, UITableViewDataSource, UITableView
         let scrollOffset = scrollView.contentOffset.y
         
         if scrollOffset + scrollViewHeight == scrollContentSizeHeight {
-            
             getPlayersFromModel()
-            
         }
         
     }
@@ -180,9 +184,7 @@ class PlayerCell: UITableViewCell {
     
     @IBOutlet weak var playerNameLabel: UILabel!
     @IBOutlet weak var playerPositionLabel: UILabel!
-    
-//    @IBOutlet weak var backgroundRoundedView: RoundedView!
-    
+        
     var color: UIColor?
     var player: BaseballPlayer? { didSet { configureCell() } }
     

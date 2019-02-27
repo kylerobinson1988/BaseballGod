@@ -12,12 +12,6 @@ class HomeViewModel {
     
     var teams: [BaseballTeam] = []
     
-    init() {
-        
-        // Init service
-        
-    }
-    
     func getTeams(completion: (()->())?) {
         
         BaseballService.shared.getTeams { teams in

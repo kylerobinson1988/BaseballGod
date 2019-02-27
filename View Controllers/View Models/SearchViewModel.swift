@@ -18,7 +18,6 @@ class SearchViewModel {
     
     private var formattedPlayerName: String = ""
     var season: Int = 2018
-    
     var teams: [BaseballTeam] = []
     var searchResults: [PlayerStats] = []
     
@@ -33,7 +32,6 @@ class SearchViewModel {
             
             self.teams = teams
             self.searchResults = [playerStats!]
-            
             
             completion(true)
             

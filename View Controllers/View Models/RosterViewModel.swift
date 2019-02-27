@@ -30,10 +30,6 @@ class RosterViewModel {
     
     var hasHitLastPage: Bool = false
     
-    init() {
-        
-    }
-    
     func getPlayers(completion: (()->())?) {
         
         guard selectedTeam.team != nil && !hasHitLastPage else { return }

@@ -23,6 +23,12 @@ class StatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         showHideIndicator(show: true)
         
+        setUpViewModel()
+        
+    }
+    
+    func setUpViewModel() {
+        
         viewModel?.getStats(completion: {
             
             DispatchQueue.main.async {
@@ -66,12 +72,6 @@ class StatViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tableView.tableFooterView = UIView(frame: CGRect.zero)
         reloadTableView()
 
-    }
-    
-    func statSetup() {
-        
-        
-        
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
